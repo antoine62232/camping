@@ -1,6 +1,6 @@
 import connexion from "../config/bdd.js";
 
-const addUser = async (lastNameUser, firstNameUser, dateOfBirth, streetNumberUser, streetNameUser, postalCodeUser, cityUser, adressComplementUser, emailUser, passwordUser, phoneNumberUser) => {
+const createUser = async (lastNameUser, firstNameUser, dateOfBirth, streetNumberUser, streetNameUser, postalCodeUser, cityUser, adressComplementUser, emailUser, passwordUser, phoneNumberUser) => {
     // Requête SQL pour insérer un nouvel utilisateur
     const insertUser = `
         INSERT INTO users (lastNameUser, firstNameUser, dateOfBirth, streetNumberUser, streetNameUser, postalCodeUser, cityUser, adressComplementUser, emailUser, passwordUser, phoneNumberUser)
@@ -12,4 +12,4 @@ const addUser = async (lastNameUser, firstNameUser, dateOfBirth, streetNumberUse
     return result;
 }
 
-export default addUser;
+export default createUser;

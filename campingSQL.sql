@@ -68,8 +68,7 @@ adressComplementUser VARCHAR(255),
 emailUser VARCHAR(255) UNIQUE NOT NULL,
 passwordUser VARCHAR(255) NOT NULL,
 phoneNumberUser CHAR(10) UNIQUE NOT NULL,
-registrationDateUser DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-roleId INT NOT NULL
+registrationDateUser DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE roles(
@@ -108,6 +107,23 @@ CREATE TABLE reservationsOptions(
     pricePaid DECIMAL(10,2) NOT NULL,
     PRIMARY KEY(reservationId, optionId)
 );
+
+CREATE TABLE employees(
+idEmployee INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+lastName VARCHAR(255) NOT NULL,
+firstName VARCHAR(255) NOT NULL,
+dateOfBirth DATE NOT NULL,
+streetNumber CHAR(10),
+streetName VARCHAR(255),
+postalCode CHAR(5),
+city VARCHAR(255),
+adressComplement VARCHAR(255),
+email VARCHAR(255) UNIQUE NOT NULL,
+password VARCHAR(255) NOT NULL,
+phoneNumber CHAR(10) UNIQUE NOT NULL,
+arrivalDate DATETIME NOT NULL,
+roleId INT NOT NULL
+);
        
 ALTER TABLE medias ADD CONSTRAINT FOREIGN KEY (accommodationId) REFERENCES accommodations(idAccommodation);
 ALTER TABLE prices ADD CONSTRAINT FOREIGN KEY (accommodationId) REFERENCES accommodations(idAccommodation);
@@ -117,7 +133,7 @@ ALTER TABLE optionsAccommodations ADD CONSTRAINT FOREIGN KEY (optionId) REFERENC
 ALTER TABLE optionsAccommodations ADD CONSTRAINT FOREIGN KEY (accommodationId) REFERENCES accommodations(idAccommodation);
 ALTER TABLE reservations ADD CONSTRAINT FOREIGN KEY (accommodationId) REFERENCES accommodations(idAccommodation);
 ALTER TABLE reservations ADD CONSTRAINT FOREIGN KEY (userId) REFERENCES users(idUser);
-ALTER TABLE users ADD CONSTRAINT FOREIGN KEY (roleId) REFERENCES roles(idRole);
+ALTER TABLE employees ADD CONSTRAINT FOREIGN KEY (roleId) REFERENCES roles(idRole);
 ALTER TABLE notices ADD CONSTRAINT FOREIGN KEY (userId) REFERENCES users(idUser);
 ALTER TABLE reservationsOptions ADD CONSTRAINT FOREIGN KEY (reservationId) REFERENCES reservations(idReservation);
 ALTER TABLE reservationsOptions ADD CONSTRAINT FOREIGN KEY (optionId) REFERENCES options(idOption);
