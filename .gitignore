@@ -1,6 +1,11 @@
-# node modules: don't commit package dependencies
+# Backend node_modules
 node_modules/
 
-# Explicit path to the backend node_modules (safe-guard)
-back/node_modules/
+# Front node_modules
+/front/node_modules/
+
+# Logs
+*.log
+
+# Environnement
 .env
