@@ -119,5 +119,5 @@ ALTER TABLE reservations ADD CONSTRAINT FOREIGN KEY (accommodationId) REFERENCES
 ALTER TABLE reservations ADD CONSTRAINT FOREIGN KEY (userId) REFERENCES users(idUser);
 ALTER TABLE users ADD CONSTRAINT FOREIGN KEY (roleId) REFERENCES roles(idRole);
 ALTER TABLE notices ADD CONSTRAINT FOREIGN KEY (userId) REFERENCES users(idUser);
-ALTER TABLE reservationsOptions ADD CONSTRAINT fk_ro_res FOREIGN KEY (reservationId) REFERENCES reservations(idReservation);
-ALTER TABLE reservationsOptions ADD CONSTRAINT fk_ro_opt FOREIGN KEY (optionId) REFERENCES options(idOption);
+ALTER TABLE reservationsOptions ADD CONSTRAINT FOREIGN KEY (reservationId) REFERENCES reservations(idReservation);
+ALTER TABLE reservationsOptions ADD CONSTRAINT FOREIGN KEY (optionId) REFERENCES options(idOption);
