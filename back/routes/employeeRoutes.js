@@ -8,5 +8,6 @@ router.get('/employeesById/:id', employeeController.getEmployeeById);
 router.post('/addEmployee', employeeController.createEmployee);
 router.put('/updateEmployee/:id', employeeController.updateEmployee);
 router.delete('/deleteEmployee/:id', employeeController.deleteEmployee);
+router.post('/login', employeeController.loginEmployee);
 
 export default router;

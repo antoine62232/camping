@@ -47,11 +47,18 @@ const fetchEmployeesRoles = async () => {
     return result;
 }
 
+const fetchEmployeeByEmail = async (email) => {
+    const sql = 'SELECT email, password FROM employees WHERE email = ?;';
+    const [result] = await connexion.query(sql, [email]);
+    return result[0]
+}
+
 export default {
     fetchAllEmployees,
     fetchEmployeesById,
     fetchCreateEmployee,
     fetchUpdateEmployee,
     fetchDeleteEmployees,
-    fetchEmployeesRoles
+    fetchEmployeesRoles,
+    fetchEmployeeByEmail
 }
