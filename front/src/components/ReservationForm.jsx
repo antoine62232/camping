@@ -1,101 +1,125 @@
 // src/components/ReservationForm.jsx
-import React from 'react';
-import { useFormik } from 'formik';
-import { reservationSchema } from '../utils/validation';
-import { submitReservation } from '../api/mockReservations';
-import { TextField, Button } from '@mui/material';
+import { Grid, TextField, Button, MenuItem, Typography } from "@mui/material";
+import { Formik, Form } from "formik";
+import { reservationValidationSchema } from "../utils/validation";
 
-export default function ReservationForm() {
-  const formik = useFormik({
-    initialValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      checkIn: '',
-      checkOut: '',
-      guests: 1,
-    },
-    validationSchema: reservationSchema,
-    onSubmit: (values, { resetForm }) => {
-      submitReservation(values).then(res => {
-        alert('Réservation confirmée !');
-        resetForm();
-        console.log(res.data);
-      });
-    },
-  });
+const accommodationTypes = [
+  { id: 1, label: "Mobil-home" },
+  { id: 2, label: "Bungalow" },
+  { id: 3, label: "Emplacement tente" },
+];
 
+const initialValues = {
+  arrivalDate: "",
+  departureDate: "",
+  adults: 1,
+  children: 0,
+  accommodationId: "",
+};
+
+function ReservationForm({ onSubmit }) {
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <TextField
-        label="Prénom"
-        name="firstName"
-        value={formik.values.firstName}
-        onChange={formik.handleChange}
-        error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-        helperText={formik.touched.firstName && formik.errors.firstName}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Nom"
-        name="lastName"
-        value={formik.values.lastName}
-        onChange={formik.handleChange}
-        error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-        helperText={formik.touched.lastName && formik.errors.lastName}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Email"
-        name="email"
-        value={formik.values.email}
-        onChange={formik.handleChange}
-        error={formik.touched.email && Boolean(formik.errors.email)}
-        helperText={formik.touched.email && formik.errors.email}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Date d’arrivée"
-        type="date"
-        name="checkIn"
-        value={formik.values.checkIn}
-        onChange={formik.handleChange}
-        error={formik.touched.checkIn && Boolean(formik.errors.checkIn)}
-        helperText={formik.touched.checkIn && formik.errors.checkIn}
-        fullWidth
-        margin="normal"
-        InputLabelProps={{ shrink: true }}
-      />
-      <TextField
-        label="Date de départ"
-        type="date"
-        name="checkOut"
-        value={formik.values.checkOut}
-        onChange={formik.handleChange}
-        error={formik.touched.checkOut && Boolean(formik.errors.checkOut)}
-        helperText={formik.touched.checkOut && formik.errors.checkOut}
-        fullWidth
-        margin="normal"
-        InputLabelProps={{ shrink: true }}
-      />
-      <TextField
-        label="Nombre de personnes"
-        type="number"
-        name="guests"
-        value={formik.values.guests}
-        onChange={formik.handleChange}
-        error={formik.touched.guests && Boolean(formik.errors.guests)}
-        helperText={formik.touched.guests && formik.errors.guests}
-        fullWidth
-        margin="normal"
-        inputProps={{ min: 1 }}
-      />
-      <Button type="submit" variant="contained" color="primary">
-        Réserver
-      </Button>
-    </form>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={reservationValidationSchema}
+      onSubmit={onSubmit}
+    >
+      {({ values, errors, touched, handleChange }) => (
+        <Form>
+          <Grid container spacing={3} alignItems={'center'}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="body2" sx={{ mb: 0.5 }}>
+                Date d’arrivée
+              </Typography>
+              <TextField
+                fullWidth
+                type="date"
+                name="arrivalDate"
+                value={values.arrivalDate}
+                onChange={handleChange}
+                error={touched.arrivalDate && Boolean(errors.arrivalDate)}
+                helperText={touched.arrivalDate && errors.arrivalDate}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <Typography variant="body2" sx={{ mb: 0.5 }}>
+                Date de départ
+              </Typography>
+              <TextField
+                fullWidth
+                type="date"
+                name="departureDate"
+                value={values.departureDate}
+                onChange={handleChange}
+                error={touched.departureDate && Boolean(errors.departureDate)}
+                helperText={touched.departureDate && errors.departureDate}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <Typography variant="body2" sx={{ mb: 0.5 }}>
+                Nombre d'adultes
+              </Typography>
+              <TextField
+                fullWidth
+                type="number"
+                name="adults"
+                value={values.adults}
+                onChange={handleChange}
+                error={touched.adults && Boolean(errors.adults)}
+                helperText={touched.adults && errors.adults}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6}>
+              <Typography variant="body2" sx={{ mb: 0.5 }}>
+                Nombre d'enfants
+              </Typography>
+              <TextField
+                fullWidth
+                type="number"
+                name="children"
+                value={values.children}
+                onChange={handleChange}
+                error={touched.children && Boolean(errors.children)}
+                helperText={touched.children && errors.children}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Typography variant="body2" sx={{ mb: 0.5 }}>
+                Type d'hébergement
+              </Typography>
+              <TextField
+                select
+                fullWidth
+                name="accommodationId"
+                value={values.accommodationId}
+                onChange={handleChange}
+                error={
+                  touched.accommodationId && Boolean(errors.accommodationId)
+                }
+                helperText={touched.accommodationId && errors.accommodationId}
+              >
+                {accommodationTypes.map((opt) => (
+                  <MenuItem key={opt.id} value={opt.id}>
+                    {opt.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Button type="submit" variant="contained" color="primary">
+                Réserver
+              </Button>
+            </Grid>
+          </Grid>
+        </Form>
+      )}
+    </Formik>
   );
 }
+
+export default ReservationForm;
