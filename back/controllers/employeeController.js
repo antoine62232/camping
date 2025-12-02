@@ -26,13 +26,13 @@ const getEmployeeById = async (res, req) => {
 
 const createEmployee = async (req, res) => {
     try {
-        const { lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate } = req.body;
+        const { lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId } = req.body;
 
         if (!lastName || !firstName || !dateOfBirth || !streetNumber || !streetName || !postalCode || !city || !email || !phoneNumber || !arrivalDate) {
             res.status(400).json({ message: "Tous les champs sont obligatoires" });
             return;
         }
-        const addEmployee = await employeeModel.fetchCreateEmployee(lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate);
+        const addEmployee = await employeeModel.fetchCreateEmployee(lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId);
         res.status(201).json(addEmployee);
 
     } catch (error) {
@@ -43,13 +43,13 @@ const createEmployee = async (req, res) => {
 const updateEmployee = async (req, res) => {
     try {
         const id = req.params;
-        const { lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate } = req.body;
+        const { lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId } = req.body;
 
         if (!lastName || !firstName || !dateOfBirth || !streetNumber || !streetName || !postalCode || !city || !email || !phoneNumber || !arrivalDate) {
             res.status(400).json({ message: "Tous les champs sont obligatoires" });
             return;
         }
-        const updateEmployye = await employeeModel.updateEmployee();
+        const updateEmployee = await employeeModel.updateEmployee(lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId);
 
         if (updateEmployee === 0) {
             res.status(404).json({ message: "Employé non trouvé" });
@@ -80,5 +80,6 @@ export default {
     getAllEmployee,
     getEmployeeById,
     createEmployee,
-    updateEmployee
+    updateEmployee,
+    deleteEmployee
 }
