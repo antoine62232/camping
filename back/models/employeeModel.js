@@ -2,7 +2,7 @@ import connexion from "../config/bdd.js";
 
 const fetchAllEmployees = async () => {
     const sql = `SELECT 
-    id, lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, phoneNumber, arrivalDate 
+    lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, phoneNumber, arrivalDate 
     FROM employees;`;
     const result = await connexion.query(sql);
     return result
@@ -17,11 +17,11 @@ const fetchEmployeesById = async (id) => {
     return result[0];
 }
 
-const fetchCreateEmployee = async (lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate) => {
+const fetchCreateEmployee = async (lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId) => {
     const sql = `INSERT INTO employees 
-    (lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate)
+    (lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
-    const [result] = await connexion.query(sql, [lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate]);
+    const [result] = await connexion.query(sql, [lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId]);
     return result;
 }
 

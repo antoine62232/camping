@@ -5,7 +5,7 @@ const getAllEmployee = async (req, res) => {
         const employees = await employeeModel.fetchAllEmployees();
         res.status(200).json(employees)
     } catch (error) {
-        res.status(500).json({ message: "Erreur lors de la récupération des employés" })
+        res.status(500).json({ message: "Erreur lors de la récupération des employés" })        
     }
 }
 
@@ -21,6 +21,7 @@ const getEmployeeById = async (res, req) => {
         }
     } catch (error) {
         res.status(500).json({ message: "Erreur lors de la récupération de l'employé." });
+
     }
 }
 
@@ -37,6 +38,8 @@ const createEmployee = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({ message: "Erreur lors de la création d'un employé." });
+        console.error(error);
+        
     }
 }
 

@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import employeeRoutes from './routes/employeeRoutes.js'
 
 dotenv.config();
 
@@ -13,7 +14,9 @@ app.get("/", (req, res) => {
     res.json({message : "Bienvenue dans l'API camping !"});
 });
 
+app.use('/api/employees', employeeRoutes);
+
 app.listen(process.env.SERVER_PORT, () => {
     console.log(`L'API est lancée sur http://localhost:${process.env.SERVER_PORT}`);
     
-})
+});
