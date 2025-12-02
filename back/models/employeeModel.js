@@ -25,16 +25,17 @@ const fetchCreateEmployee = async (lastName, firstName, dateOfBirth, streetNumbe
     return result;
 }
 
-const fetchUpdateEmployee = async (lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate) => {
+const fetchUpdateEmployee = async (idEmployee, lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId, id) => {
     const sql = `UPDATE employees SET
-    lastName = ?, firstName= ?, dateOfBirth = ?, streetNumber = ?, streetName = ?, postalCode = ?, city = ?, adressComplement = ?, email = ?, password = ?, phoneNumber = ?, arrivalDate = ?;`;
-    const result = await connexion.query(sql, [lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate]);
+    lastName = ?, firstName = ?, dateOfBirth = ?, streetNumber = ?, streetName = ?, postalCode = ?, city = ?, adressComplement = ?, email = ?, password = ?, phoneNumber = ?, arrivalDate = ?, roleId = ?
+    WHERE idEmployee = ?;`;
+    const [result] = await connexion.query(sql, [idEmployee, lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId, id]);
     return result;
 }
 
 const fetchDeleteEmployees = async (id) => {
     const sql = "DELETE FROM employees WHERE idEmployee = ?;";
-    const result = await connexion.query(sql, [id]);
+    const [result] = await connexion.query(sql, [id]);
     return result;
 }
 
@@ -42,7 +43,7 @@ const fetchEmployeesRoles = async () => {
     const sql = `SELECT e.lastName, e.firstName, r.nameRole
     FROM employees e
     INNER JOIN roles r ON r.idRole = e.roleId;`;
-    const result = await connexion.query(sql);
+    const [result] = await connexion.query(sql);
     return result;
 }
 
