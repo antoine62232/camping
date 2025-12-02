@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import usersRoutes from './routes/usersRoutes.js';
 
 dotenv.config();
 
@@ -16,4 +17,6 @@ app.get("/", (req, res) => {
 app.listen(process.env.SERVER_PORT, () => {
     console.log(`L'API est lancée sur http://localhost:${process.env.SERVER_PORT}`);
     
-})
+});
+
+app.use('/api/users', usersRoutes);
