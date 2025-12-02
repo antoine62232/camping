@@ -1,4 +1,5 @@
 import employeeModel from "../models/employeeModel.js";
+import bcrypt from 'bcryptjs';
 
 const getAllEmployee = async (req, res) => {
     try {
@@ -33,12 +34,12 @@ const createEmployee = async (req, res) => {
             res.status(400).json({ message: "Tous les champs sont obligatoires" });
             return;
         }
-        const addEmployee = await employeeModel.fetchCreateEmployee(lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId);
+
+        const passwordHash = bcrypt.hashSync(password, 10);
+        const addEmployee = await employeeModel.fetchCreateEmployee(lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, passwordHash, phoneNumber, arrivalDate, roleId);
         res.status(201).json(addEmployee);
 
     } catch (error) {
-        console.error(error);
-        
         res.status(500).json({ message: "Erreur lors de la création d'un employé." });
 
     }
@@ -46,14 +47,16 @@ const createEmployee = async (req, res) => {
 
 const updateEmployee = async (req, res) => {
     try {
-        const id = req.params;
+        const id = req.params.id;
         const { lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId } = req.body;
 
         if (!lastName || !firstName || !dateOfBirth || !streetNumber || !streetName || !postalCode || !city || !email || !phoneNumber || !arrivalDate) {
             res.status(400).json({ message: "Tous les champs sont obligatoires" });
             return;
         }
-        const updateEmployee = await employeeModel.fetchUpdateEmployee(lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId);
+
+        const passwordHash = bcrypt.hashSync(password, 10);
+        const updateEmployee = await employeeModel.fetchUpdateEmployee(lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, passwordHash, phoneNumber, arrivalDate, roleId, id);
 
         if (updateEmployee === 0) {
             res.status(404).json({ message: "Employé non trouvé" });
@@ -61,7 +64,7 @@ const updateEmployee = async (req, res) => {
             res.status(200).json({ message: "Employé mis à jour" });
         }
 
-    } catch (error) {
+    } catch (error) {        
         res.status(500).json({ message: "Erreur lors de la mise à jour de l'employé" })
     }
 }
@@ -77,7 +80,7 @@ const deleteEmployee = async (req, res) => {
         }
     } catch (error) {
         console.error(error);
-        
+
         res.status(500).json({ message: "Erreur lors de la suppression de l'employé" })
     }
 }
