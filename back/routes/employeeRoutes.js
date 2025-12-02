@@ -9,4 +9,4 @@ router.post('/addEmployee', employeeController.createEmployee);
 router.put('/updateEmployee', employeeController.updateEmployee);
 router.delete('/deleteEmployee/:id', employeeController.deleteEmployee);
 
-export default router
+export default router;

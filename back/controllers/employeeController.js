@@ -5,11 +5,11 @@ const getAllEmployee = async (req, res) => {
         const employees = await employeeModel.fetchAllEmployees();
         res.status(200).json(employees)
     } catch (error) {
-        res.status(500).json({ message: "Erreur lors de la récupération des employés" })        
+        res.status(500).json({ message: "Erreur lors de la récupération des employés" })
     }
 }
 
-const getEmployeeById = async (res, req) => {
+const getEmployeeById = async (req, res) => {
     try {
         const id = req.params.id;
         const employee = await employeeModel.fetchEmployeesById(id);
@@ -37,9 +37,10 @@ const createEmployee = async (req, res) => {
         res.status(201).json(addEmployee);
 
     } catch (error) {
-        res.status(500).json({ message: "Erreur lors de la création d'un employé." });
         console.error(error);
         
+        res.status(500).json({ message: "Erreur lors de la création d'un employé." });
+
     }
 }
 
@@ -52,7 +53,7 @@ const updateEmployee = async (req, res) => {
             res.status(400).json({ message: "Tous les champs sont obligatoires" });
             return;
         }
-        const updateEmployee = await employeeModel.updateEmployee(lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId);
+        const updateEmployee = await employeeModel.fetchUpdateEmployee(lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId);
 
         if (updateEmployee === 0) {
             res.status(404).json({ message: "Employé non trouvé" });
@@ -61,21 +62,23 @@ const updateEmployee = async (req, res) => {
         }
 
     } catch (error) {
-        res.status(500).json({message : "Erreur lors de la mise à jour de l'employé"})
+        res.status(500).json({ message: "Erreur lors de la mise à jour de l'employé" })
     }
 }
 
-const deleteEmployee = async (req, res) =>{
+const deleteEmployee = async (req, res) => {
     try {
         const id = req.params.id
-        const deleteEmployee = await employeeModel.deleteEmployee(id);
+        const deleteEmployee = await employeeModel.fetchDeleteEmployees(id);
         if (deleteEmployee === 0) {
             res.status(404).json({ message: "Employé non trouvé" });
         } else {
             res.status(200).json({ message: "Employé supprimé" });
         }
     } catch (error) {
-        res.status(500).json({message : "Erreur lors de la suppression de l'employé"})
+        console.error(error);
+        
+        res.status(500).json({ message: "Erreur lors de la suppression de l'employé" })
     }
 }
 

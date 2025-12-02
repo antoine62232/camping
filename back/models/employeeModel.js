@@ -4,16 +4,16 @@ const fetchAllEmployees = async () => {
     const sql = `SELECT 
     lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, phoneNumber, arrivalDate 
     FROM employees;`;
-    const result = await connexion.query(sql);
+    const [result] = await connexion.query(sql);
     return result
 }
 
 const fetchEmployeesById = async (id) => {
     const sql = `SELECT 
-    id, lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, phoneNumber, arrivalDate 
+    idEmployee, lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, phoneNumber, arrivalDate 
     FROM employees
-    WHERE id = ?;`;
-    const result = await connexion.query(sql, [id]);
+    WHERE idEmployee = ?;`;
+    const [result] = await connexion.query(sql, [id]);
     return result[0];
 }
 
@@ -27,13 +27,13 @@ const fetchCreateEmployee = async (lastName, firstName, dateOfBirth, streetNumbe
 
 const fetchUpdateEmployee = async (lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate) => {
     const sql = `UPDATE employees SET
-    lastName = ? firstName= ? dateOfBirth = ?, streetNumber = ?, streetName = ?, postalCode = ?, city = ?, adressComplement = ?, email = ?, password = ?, phoneNumber = ?, arrivalDate = ?;`;
+    lastName = ?, firstName= ?, dateOfBirth = ?, streetNumber = ?, streetName = ?, postalCode = ?, city = ?, adressComplement = ?, email = ?, password = ?, phoneNumber = ?, arrivalDate = ?;`;
     const result = await connexion.query(sql, [lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate]);
     return result;
 }
 
 const fetchDeleteEmployees = async (id) => {
-    const sql = "DELETE FROM employees WHERE id = ?;";
+    const sql = "DELETE FROM employees WHERE idEmployee = ?;";
     const result = await connexion.query(sql, [id]);
     return result;
 }
