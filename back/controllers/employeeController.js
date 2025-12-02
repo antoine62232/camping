@@ -64,7 +64,7 @@ const updateEmployee = async (req, res) => {
             res.status(200).json({ message: "Employé mis à jour" });
         }
 
-    } catch (error) {        
+    } catch (error) {
         res.status(500).json({ message: "Erreur lors de la mise à jour de l'employé" })
     }
 }
@@ -85,10 +85,35 @@ const deleteEmployee = async (req, res) => {
     }
 }
 
+const loginEmployee = async (req, res) => {
+    try {
+        const {email, password} = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ message : "L'email et le mot de passe sont requis"});            
+        }
+
+        const employee = await employeeModel.fetchEmployeeByEmail(email);
+        if (!employee) {
+            return res.status(401).json({message : "email ou mot de passe incorrect"})
+        }
+        const passwordValid = bcrypt.compareSync(password, employee.password);
+        if (passwordValid) {
+            res.status(200).json({message : "vous êtes connectés"})
+        }else {
+            res.status(401).json({message : "email ou mot de passe incorrect"})
+        }
+    } catch (error) {
+        res.status(500).json({ message: "erreur lors de la connexion de l'employé" })
+        console.error(error);
+        
+    }
+}
+
 export default {
     getAllEmployee,
     getEmployeeById,
     createEmployee,
     updateEmployee,
-    deleteEmployee
+    deleteEmployee,
+    loginEmployee
 }
