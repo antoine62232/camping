@@ -7,8 +7,8 @@ router.post('/register', usersControllers.createUser);
 router.get('/', usersControllers.getAllUsers);
 router.get('/:email', usersControllers.getUserByEmail);
 router.post('/login', usersControllers.login);
-router.put('/:id', usersControllers.updateUser);
-router.delete('/:id', usersControllers.deleteUser);
+router.put('update/:id', usersControllers.updateUser);
+router.delete('delete/:id', usersControllers.deleteUser);
 
 
 export default router;
