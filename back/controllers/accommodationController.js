@@ -54,29 +54,30 @@ const updateAccommodation = async (req, res) => {
             res.status(200).json(updateAccommodation);
         }
     } catch (error) {
-        res.status(500).json({ message: "erreur lors de la modification des hébergements" });
+        res.status(404).json({ message: "hébergement modifié" });
     }
 }
 
-const deleteAccommodation = async (req, res) => {
-    try {
-        const id = req.params.id;
-        const deleteAccommodation = await accommodationModel.fetchDeleteAccommodation(id);
 
-        if (deleteAccommodation === 0) {
-            res.status(404).json({ message: "hébergement non trouvé" });
-        } else {
-            res.status(200).json({ message: "hébergement supprimé" });
+    const deleteAccommodation = async (req, res) => {
+        try {
+            const id = req.params.id;
+            const deleteAccommodation = await accommodationModel.fetchDeleteAccommodation(id);
+
+            if (deleteAccommodation === 0) {
+                res.status(404).json({ message: "hébergement non trouvé" });
+            } else {
+                res.status(200).json({ message: "hébergement supprimé" });
+            }
+        } catch (error) {
+            res.status(500).json({ message: "erreur lors de la suppression des hébergements" });
         }
-    } catch (error) {
-        res.status(500).json({ message: "erreur lors de la suppression des hébergements" });
     }
-}
 
-export default {
-    getAllAccommodations,
-    getAccommodationById,
-    createAccommodation,
-    updateAccommodation,
-    deleteAccommodation
-}
+    export default {
+        getAllAccommodations,
+        getAccommodationById,
+        createAccommodation,
+        updateAccommodation,
+        deleteAccommodation
+    }
