@@ -5,6 +5,7 @@ import employeeRoutes from './routes/employeeRoutes.js'
 import usersRoutes from './routes/usersRoutes.js';
 import noticesRoutes from './routes/noticesRoutes.js';
 import accommodationRoutes from './routes/accommodationRoutes.js';
+import reservationsRoutes from './routes/reservationsRoutes.js';
 
 dotenv.config();
 
@@ -28,3 +29,4 @@ app.use('/api/users', usersRoutes);
 app.use('/api/notices', noticesRoutes);
 app.use('/api/accommodations', accommodationRoutes);
 
+app.use('/api/reservations', reservationsRoutes);
