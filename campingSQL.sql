@@ -124,6 +124,18 @@ phoneNumber CHAR(10) UNIQUE NOT NULL,
 arrivalDate DATETIME NOT NULL,
 roleId INT NOT NULL
 );
+
+CREATE TABLE employeeSchedules (
+    idSchedule INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    employeeId INT NOT NULL,
+    scheduleDate DATE NOT NULL,
+    startTime TIME NOT NULL,
+    endTime TIME NOT NULL,
+    hoursWorked DECIMAL(5,2),
+    status VARCHAR(20) NOT NULL DEFAULT 'scheduled',
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FOREIGN KEY (employeeId) REFERENCES employees(idEmployee)
+);
        
 ALTER TABLE medias ADD CONSTRAINT FOREIGN KEY (accommodationId) REFERENCES accommodations(idAccommodation);
 ALTER TABLE prices ADD CONSTRAINT FOREIGN KEY (accommodationId) REFERENCES accommodations(idAccommodation);
@@ -137,3 +149,4 @@ ALTER TABLE employees ADD CONSTRAINT FOREIGN KEY (roleId) REFERENCES roles(idRol
 ALTER TABLE notices ADD CONSTRAINT FOREIGN KEY (userId) REFERENCES users(idUser);
 ALTER TABLE reservationsOptions ADD CONSTRAINT FOREIGN KEY (reservationId) REFERENCES reservations(idReservation);
 ALTER TABLE reservationsOptions ADD CONSTRAINT FOREIGN KEY (optionId) REFERENCES options(idOption);
+ALTER TABLE employeeSchedules ADD CONSTRAINT FOREIGN KEY (employeeId) REFERENCES employees(idEmployee);
