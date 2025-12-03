@@ -1,9 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import employeeRoutes from './routes/employeeRoutes.js'
 import usersRoutes from './routes/usersRoutes.js';
 import noticesRoutes from './routes/noticesRoutes.js';
-import employeeRoutes from './routes/employeeRoutes.js'
+
 
 dotenv.config();
 
