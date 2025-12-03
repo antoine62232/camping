@@ -4,6 +4,8 @@ import cors from 'cors';
 import employeeRoutes from './routes/employeeRoutes.js'
 import usersRoutes from './routes/usersRoutes.js';
 import noticesRoutes from './routes/noticesRoutes.js';
+import accommodationRoutes from './routes/accommodationRoutes.js';
+import reservationsRoutes from './routes/reservationsRoutes.js';
 
 
 dotenv.config();
@@ -17,13 +19,16 @@ app.get("/", (req, res) => {
     res.json({message : "Bienvenue dans l'API camping !"});
 });
 
-app.use('/api/employees', employeeRoutes);
+
 
 app.listen(process.env.SERVER_PORT, () => {
     console.log(`L'API est lancée sur http://localhost:${process.env.SERVER_PORT}`);
 
 });
-
+app.use('/api/employees', employeeRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/notices', noticesRoutes);
 
+app.use('/api/accommodations', accommodationRoutes);
+
+app.use('/api/reservations', reservationsRoutes);
