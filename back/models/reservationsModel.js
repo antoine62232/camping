@@ -16,7 +16,7 @@ const getAllReservations = async () => {
 }
 
 const getReservationById = async (idReservation) => {
-    const selectReservationById = `SELECT dateReservation, arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId FROM reservations WHERE id = ?`;
+    const selectReservationById = `SELECT dateReservation, arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId FROM reservations WHERE idReservation = ?`;
     const [result] = await connexion.query(selectReservationById, [idReservation]);
     return result;
 }
@@ -25,14 +25,14 @@ const updateReservation = async (idReservation, arrivalDateReservation, departur
     const updateReservation = `
         UPDATE reservations
         SET arrivalDateReservation = ?, departureDateReservation = ?, numberAdult = ?, numberChildren = ?, priceHtReservation = ?, tvaReservation = ?, priceTotal = ?, statusReservation = ?, userId = ?, accommodationId = ?
-        WHERE id = ?;
+        WHERE idReservation = ?;
     `;
     const [result] = await connexion.query(updateReservation, [arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId, idReservation]);
     return result;
 }
 
 const deleteReservation = async (idReservation) => {
-    const deleteReservation = `DELETE FROM reservations WHERE id = ?`;
+    const deleteReservation = `DELETE FROM reservations WHERE idReservation = ?`;
     const [result] = await connexion.query(deleteReservation, [idReservation]);
     return result;
 }

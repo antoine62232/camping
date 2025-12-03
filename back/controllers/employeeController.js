@@ -56,7 +56,7 @@ const updateEmployee = async (req, res) => {
         }
 
         const passwordHash = bcrypt.hashSync(password, 10);
-        const updateEmployee = await employeeModel.fetchUpdateEmployee(lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, passwordHash, phoneNumber, arrivalDate, roleId, id);
+        const updateEmployee = await employeeModel.fetchUpdateEmployee(id, lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, passwordHash, phoneNumber, arrivalDate, roleId);
 
         if (updateEmployee === 0) {
             res.status(404).json({ message: "Employé non trouvé" });
