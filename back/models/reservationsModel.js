@@ -21,13 +21,13 @@ const getReservationById = async (idReservation) => {
     return result;
 }
 
-const updateReservation = async (idReservation, arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId) => {
+const updateReservation = async (idReservation, arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId, couponId) => {
     const updateReservation = `
         UPDATE reservations
-        SET arrivalDateReservation = ?, departureDateReservation = ?, numberAdult = ?, numberChildren = ?, priceHtReservation = ?, tvaReservation = ?, priceTotal = ?, statusReservation = ?, userId = ?, accommodationId = ?
+        SET arrivalDateReservation = ?, departureDateReservation = ?, numberAdult = ?, numberChildren = ?, priceHtReservation = ?, tvaReservation = ?, priceTotal = ?, statusReservation = ?, userId = ?, accommodationId = ?, couponId = ?
         WHERE idReservation = ?;
     `;
-    const [result] = await connexion.query(updateReservation, [arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId, idReservation]);
+    const [result] = await connexion.query(updateReservation, [arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId, couponId || null, idReservation]);
     return result;
 }
 

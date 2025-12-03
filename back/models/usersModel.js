@@ -15,7 +15,7 @@ const createUser = async (userData) => {
 
 // Récupérer tous le clients
 const getAllUsers = async () => {
-    const [rows] = await connexion.query("SELECT idUser, lastNameUser, firstNameUser, dateOfBirth, streetNumberUser, streetNameUser, postalCodeUser, cityUser, adressComplementUser, emailUser, passwordUser, phoneNumberUser FROM users");
+    const [rows] = await connexion.query("SELECT idUser, lastNameUser, firstNameUser, dateOfBirth, streetNumberUser, streetNameUser, postalCodeUser, cityUser, adressComplementUser, emailUser, phoneNumberUser FROM users");
     return rows;
 }
 

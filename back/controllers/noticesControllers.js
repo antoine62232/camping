@@ -2,6 +2,7 @@ import noticesModel from "../models/noticesModel.js";
 
 const createNotice = async (req, res) => {
     try {
+        console.log("REQ.BODY createNotice :", req.body);
         const { userId, note, comment } = req.body;
         // Vérifications
         if (!userId || !note) {

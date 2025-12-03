@@ -39,3 +39,6 @@ INSERT INTO coupons (codeCoupon, valueReduction, expiryDate) VALUES
 ('WELCOME10', 10.00, '2025-12-31'),
 ('ETE25', 25.00, '2025-08-31'),
 ('VIP5', 5.00, '2026-01-31');
+
+INSERT INTO users (lastNameUser, firstNameUser, dateOfBirth, emailUser, passwordUser, phoneNumberUser) 
+VALUES ('Dupont', 'Jean', '1980-05-15', 'jean@test.com', '$2a$10$hash', '0123456789');

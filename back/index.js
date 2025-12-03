@@ -19,14 +19,14 @@ app.get("/", (req, res) => {
 });
 
 
+app.use('/api/employees', employeeRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/notices', noticesRoutes);
+app.use('/api/accommodations', accommodationRoutes);
+app.use('/api/reservations', reservationsRoutes);
+
 
 app.listen(process.env.SERVER_PORT, () => {
     console.log(`L'API est lancée sur http://localhost:${process.env.SERVER_PORT}`);
     
 });
-app.use('/api/employees', employeeRoutes);
-app.use('/api/users', usersRoutes);
-app.use('/api/notices', noticesRoutes);
-app.use('/api/accommodations', accommodationRoutes);
-
-app.use('/api/reservations', reservationsRoutes);

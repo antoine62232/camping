@@ -438,3 +438,68 @@ Message "Avis supprimé avec succès !".
 }
 
 ```
+**Résultat attendu**
+Status 201 
+Message “Réservation ajoutée avec succès !” + id de la réservation.
+
+---
+
+### 5.2. Récupérer toutes les réservations
+**Requête**
+**Method:** GET
+**URL:** /reservations/
+
+**Résultat attendu**
+Status 200
+Tableau de réservations.
+
+---
+
+### 5.3. Récupérer une réservation par ID
+**Requête**
+**Method:** GET
+**URL:** /reservations/1
+
+**Résultat attendu**
+Status 200
+Objet réservation.
+
+---
+
+### 5.4. Mise à jour d’une réservation
+**Requête**
+**Method:** PUT
+**URL:** /reservations/update/1
+
+
+**Body (JSON)**
+
+```json
+{ 
+  "arrivalDateReservation": "2025-07-11", 
+  "departureDateReservation": "2025-07-18", 
+  "numberAdult": 2, 
+  "numberChildren": 2, 
+  "priceHtReservation": 630.00, 
+  "tvaReservation": 126.00, 
+  "priceTotal": 756.00, 
+  "statusReservation": "validée", 
+  "userId": 1, 
+  "accommodationId": 1 
+}
+```
+
+**Résultat attendu**
+Status 200 ou 201
+Message “Réservation modifiée avec succès !”.
+
+---
+
+### 5.5. Récupérer une réservation par ID
+**Requête**
+**Method:** DELETE
+**URL:** /reservations/delete/1
+
+**Résultat attendu**
+Status 200 ou 201
+Message “Réservation supprimée avec succès !”.

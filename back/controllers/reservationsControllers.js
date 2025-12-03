@@ -3,6 +3,11 @@ import reservationsModel from "../models/reservationsModel.js";
 const createReservation = async (req, res) => {
     try {
         const { arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId } = req.body;
+        
+        if (!userId || !accommodationId) {
+            return res.status(400).json({ message: "userId et accommodationId obligatoires" });
+        }
+        
         const reservationId = await reservationsModel.createReservation(arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId);
         res.status(201).json({
             message: "Réservation ajoutée avec succès !",
@@ -36,8 +41,8 @@ const getReservationById = async (req, res) => {
 
 const updateReservation = async (req, res) => {
     try {
-        const { arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId } = req.body;
-        const reservationId = await reservationsModel.updateReservation(req.params.id, arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId);
+        const { arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId, couponId } = req.body;
+        const reservationId = await reservationsModel.updateReservation(req.params.id, arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId, couponId || null);
         res.status(201).json({
             message: "Réservation modifiée avec succès !",
             id: reservationId
