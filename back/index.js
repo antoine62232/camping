@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import usersRoutes from './routes/usersRoutes.js';
 import noticesRoutes from './routes/noticesRoutes.js';
+import reservationsRoutes from './routes/reservationsRoutes.js';
 
 dotenv.config();
 
@@ -22,3 +23,4 @@ app.listen(process.env.SERVER_PORT, () => {
 
 app.use('/api/users', usersRoutes);
 app.use('/api/notices', noticesRoutes);
+app.use('/api/reservations', reservationsRoutes);
