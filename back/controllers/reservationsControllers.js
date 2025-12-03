@@ -2,8 +2,8 @@ import reservationsModel from "../models/reservationsModel.js";
 
 const createReservation = async (req, res) => {
     try {
-        const { arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal } = req.body;
-        const reservationId = await reservationsModel.createReservation(arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal);
+        const { arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId } = req.body;
+        const reservationId = await reservationsModel.createReservation(arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId);
         res.status(201).json({
             message: "Réservation ajoutée avec succès !",
             id: reservationId
