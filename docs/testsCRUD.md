@@ -503,3 +503,241 @@ Message “Réservation modifiée avec succès !”.
 **Résultat attendu**
 Status 200 ou 201
 Message “Réservation supprimée avec succès !”.
+
+---
+
+# Documentation API
+
+## 6. Coupons
+
+### 6.1. Création d'un coupon
+
+**Requête**
+- Method: POST
+- URL: /coupons/register
+
+**Body (JSON)**
+```json
+{
+  "codeCoupon": "ETE2025",
+  "valueReduction": 15.00,
+  "expiryDate": "2025-08-31"
+}
+```
+
+**Résultat attendu**
+- Status: 201
+- JSON:
+```json
+{
+  "message": "Coupon créé avec succès !",
+  "id": 1
+}
+```
+
+### 6.2. Récupérer tous les coupons
+
+**Requête**
+- Method: GET
+- URL: /coupons/
+
+**Résultat attendu**
+- Status: 200
+- Tableau de coupons
+
+### 6.3. Récupérer un coupon par ID
+
+**Requête**
+- Method: GET
+- URL: /coupons/1
+
+**Résultat attendu**
+- Status: 200
+- Objet coupon
+
+### 6.4. Mise à jour d'un coupon
+
+**Requête**
+- Method: PUT
+- URL: /coupons/update/1
+
+**Body (JSON)**
+```json
+{
+  "codeCoupon": "ETE2025PRO",
+  "valueReduction": 20.00,
+  "expiryDate": "2025-09-15"
+}
+```
+
+**Résultat attendu**
+- Status: 200
+- Message: "Coupon mis à jour avec succès !"
+
+### 6.5. Suppression d'un coupon
+
+**Requête**
+- Method: DELETE
+- URL: /coupons/delete/1
+
+**Résultat attendu**
+- Status: 200
+- Message: "Coupon supprimé avec succès !"
+
+---
+
+## 7. Payments (Paiements)
+
+### 7.1. Création d'un paiement
+
+**Requête**
+- Method: POST
+- URL: /payments/register
+
+**Body (JSON)**
+```json
+{
+  "reservationId": 1,
+  "amount": 672.00,
+  "referenceTransaction": "PAY-20250710-001",
+  "paymentStatus": "payé",
+  "paymentMethod": "carte"
+}
+```
+
+**Résultat attendu**
+- Status: 201
+- JSON:
+```json
+{
+  "message": "Paiement créé avec succès !",
+  "id": 1
+}
+```
+
+### 7.2. Récupérer tous les paiements
+
+**Requête**
+- Method: GET
+- URL: /payments/
+
+**Résultat attendu**
+- Status: 200
+- Tableau de paiements
+
+### 7.3. Récupérer un paiement par ID
+
+**Requête**
+- Method: GET
+- URL: /payments/1
+
+**Résultat attendu**
+- Status: 200
+- Objet paiement
+
+### 7.4. Mise à jour d'un paiement
+
+**Requête**
+- Method: PUT
+- URL: /payments/update/1
+
+**Body (JSON)**
+```json
+{
+  "reservationId": 1,
+  "amount": 672.00,
+  "referenceTransaction": "PAY-20250710-001-UPDATED",
+  "paymentStatus": "remboursé",
+  "paymentMethod": "virement"
+}
+```
+
+**Résultat attendu**
+- Status: 200
+- Message: "Paiement mis à jour avec succès !"
+
+### 7.5. Suppression d'un paiement
+
+**Requête**
+- Method: DELETE
+- URL: /payments/delete/1
+
+**Résultat attendu**
+- Status: 200
+- Message: "Paiement supprimé avec succès !"
+
+---
+
+## 8. Roles
+
+### 8.1. Création d'un rôle
+
+**Requête**
+- Method: POST
+- URL: /roles/register
+
+**Body (JSON)**
+```json
+{
+  "nameRole": "Animateur",
+  "descriptionRole": "Gère les animations et activités enfants"
+}
+```
+
+**Résultat attendu**
+- Status: 201
+- JSON:
+```json
+{
+  "message": "Rôle créé avec succès !",
+  "id": 1
+}
+```
+
+### 8.2. Récupérer tous les rôles
+
+**Requête**
+- Method: GET
+- URL: /roles/
+
+**Résultat attendu**
+- Status: 200
+- Tableau de rôles
+
+### 8.3. Récupérer un rôle par ID
+
+**Requête**
+- Method: GET
+- URL: /roles/1
+
+**Résultat attendu**
+- Status: 200
+- Objet rôle
+
+### 8.4. Mise à jour d'un rôle
+
+**Requête**
+- Method: PUT
+- URL: /roles/update/1
+
+**Body (JSON)**
+```json
+{
+  "nameRole": "Animateur Senior",
+  "descriptionRole": "Supervise animations et activités enfants"
+}
+```
+
+**Résultat attendu**
+- Status: 200
+- Message: "Rôle mis à jour avec succès !"
+
+### 8.5. Suppression d'un rôle
+
+**Requête**
+- Method: DELETE
+- URL: /roles/delete/1
+
+**Résultat attendu**
+- Status: 200
+- Message: "Rôle supprimé avec succès !"
