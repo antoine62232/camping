@@ -49,12 +49,11 @@ const updateAccommodation = async (req, res) => {
         }
         const updateAccommodation = await accommodationModel.fetchUpdateAccommodation(id, typeAccommodation, descriptionAccommodation, abilityAccommodation, surfaceAccommodation, equipementAccommodation, availableAccommodation, basePriceAccommodation)
         if (updateAccommodation === 0) {
-            res.status(404).json({message : "hébergement modifié"});
+            res.status(404).json({ message: "hébergement modifié" });
         } else {
             res.status(200).json(updateAccommodation);
         }
-    } catch (error) {   
-        console.error(error);    
+    } catch (error) {
         res.status(500).json({ message: "erreur lors de la modification des hébergements" });
     }
 }
