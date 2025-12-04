@@ -6,6 +6,7 @@ import usersRoutes from './routes/usersRoutes.js';
 import noticesRoutes from './routes/noticesRoutes.js';
 import accommodationRoutes from './routes/accommodationRoutes.js';
 import reservationsRoutes from './routes/reservationsRoutes.js';
+import optionsRoutes from './routes/optionsRoutes.js';
 
 dotenv.config();
 
@@ -19,14 +20,17 @@ app.get("/", (req, res) => {
 });
 
 
-app.use('/api/employees', employeeRoutes);
-app.use('/api/users', usersRoutes);
-app.use('/api/notices', noticesRoutes);
-app.use('/api/accommodations', accommodationRoutes);
-app.use('/api/reservations', reservationsRoutes);
-
 
 app.listen(process.env.SERVER_PORT, () => {
     console.log(`L'API est lancée sur http://localhost:${process.env.SERVER_PORT}`);
-    
+
 });
+app.use('/api/employees', employeeRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/notices', noticesRoutes);
+
+app.use('/api/accommodations', accommodationRoutes);
+app.use('/api/reservations', reservationsRoutes);
+app.use('/api/options', optionsRoutes);
+
+
