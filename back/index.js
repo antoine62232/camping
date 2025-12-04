@@ -30,7 +30,6 @@ app.use('/api/users', usersRoutes);
 app.use('/api/notices', noticesRoutes);
 
 app.use('/api/accommodations', accommodationRoutes);
-
 app.use('/api/reservations', reservationsRoutes);
 app.use('/api/options', optionsRoutes);
 

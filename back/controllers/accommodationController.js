@@ -32,7 +32,10 @@ const createAccommodation = async (req, res) => {
             return;
         }
         const addAccommodation = await accommodationModel.fetchCreateAccommodation(typeAccommodation, descriptionAccommodation, abilityAccommodation, surfaceAccommodation, equipementAccommodation, availableAccommodation, basePriceAccommodation)
-        res.status(201).json(addAccommodation);
+        res.status(201).json({
+        message: "Hébergement créé avec succès !",
+        id: addAccommodation.insertId
+});
     } catch (error) {
         res.status(500).json({ message: "erreur lors de la création des hébergements" });
     }
@@ -51,7 +54,9 @@ const updateAccommodation = async (req, res) => {
         if (updateAccommodation === 0) {
             res.status(404).json({ message: "hébergement modifié" });
         } else {
-            res.status(200).json(updateAccommodation);
+            res.status(200).json({
+            message: "Hébergement modifié avec succès !",
+            });
         }
     } catch (error) {
         res.status(404).json({ message: "hébergement modifié" });
@@ -70,6 +75,7 @@ const updateAccommodation = async (req, res) => {
                 res.status(200).json({ message: "hébergement supprimé" });
             }
         } catch (error) {
+            console.error(error);
             res.status(500).json({ message: "erreur lors de la suppression des hébergements" });
         }
     }

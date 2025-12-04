@@ -25,11 +25,11 @@ const fetchCreateEmployee = async (lastName, firstName, dateOfBirth, streetNumbe
     return result;
 }
 
-const fetchUpdateEmployee = async (idEmployee, lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId, id) => {
+const fetchUpdateEmployee = async (idEmployee, lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId) => {
     const sql = `UPDATE employees SET
     lastName = ?, firstName = ?, dateOfBirth = ?, streetNumber = ?, streetName = ?, postalCode = ?, city = ?, adressComplement = ?, email = ?, password = ?, phoneNumber = ?, arrivalDate = ?, roleId = ?
     WHERE idEmployee = ?;`;
-    const [result] = await connexion.query(sql, [idEmployee, lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId, id]);
+    const [result] = await connexion.query(sql, [lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, password, phoneNumber, arrivalDate, roleId, idEmployee]);
     return result;
 }
 
