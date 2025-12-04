@@ -48,7 +48,11 @@ const fetchEmployeesRoles = async () => {
 }
 
 const fetchEmployeeByEmail = async (email) => {
-    const sql = 'SELECT email, password FROM employees WHERE email = ?;';
+    const sql = `
+        SELECT e.idEmployee, e.email, e.password, e.roleId 
+        FROM employees e 
+        WHERE e.email = ?
+    `;
     const [result] = await connexion.query(sql, [email]);
     return result[0]
 }

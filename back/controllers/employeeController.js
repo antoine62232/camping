@@ -1,5 +1,6 @@
 import employeeModel from "../models/employeeModel.js";
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const getAllEmployee = async (req, res) => {
     try {
@@ -43,8 +44,8 @@ const createEmployee = async (req, res) => {
 });
 
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: "Erreur lors de la création d'un employé." });
-
     }
 }
 
@@ -89,28 +90,44 @@ const deleteEmployee = async (req, res) => {
 }
 
 const loginEmployee = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        if (!email || !password) {
-            return res.status(400).json({ message: "L'email et le mot de passe sont requis" });
-        }
+  try {
+    const { email, password } = req.body;
 
-        const employee = await employeeModel.fetchEmployeeByEmail(email);
-        if (!employee) {
-            return res.status(401).json({ message: "email ou mot de passe incorrect" })
-        }
-        const passwordValid = bcrypt.compareSync(password, employee.password);
-        if (passwordValid) {
-            res.status(200).json({ message: "vous êtes connectés" })
-        } else {
-            res.status(401).json({ message: "email ou mot de passe incorrect" })
-        }
-    } catch (error) {
-        res.status(500).json({ message: "erreur lors de la connexion de l'employé" })
-        console.error(error);
-
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email et mot de passe requis" });
     }
-}
+
+    const employee = await employeeModel.fetchEmployeeByEmail(email);
+    if (!employee) {
+      return res.status(401).json({ message: "Email ou mot de passe incorrect" });
+    }
+
+    const passwordValid = await bcrypt.compare(password, employee.password);
+    if (!passwordValid) {
+      return res.status(401).json({ message: "Email ou mot de passe incorrect" });
+    }
+
+    const token = jwt.sign(
+      { idEmployee: employee.idEmployee, roleId: employee.roleId },
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
+    return res.status(200).json({
+      message: "Connexion employée réussie",
+      token: token,
+      employee: {
+        id: employee.idEmployee,
+        roleId: employee.roleId,
+        email: employee.email,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Erreur serveur lors de la connexion" });
+  }
+};
+
 
 export default {
     getAllEmployee,

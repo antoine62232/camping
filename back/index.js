@@ -18,6 +18,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
     res.json({message : "Bienvenue dans l'API camping !"});
@@ -35,9 +36,6 @@ app.use('/api/notices', noticesRoutes);
 app.use('/api/accommodations', accommodationRoutes);
 app.use('/api/reservations', reservationsRoutes);
 app.use('/api/prices', priceRoutes);
-
-app.use('/api/accommodations', accommodationRoutes);
-app.use('/api/reservations', reservationsRoutes);
 app.use('/api/coupons', couponsRoutes);
 app.use('/api/payments', paymentsRoutes);
 app.use('/api/roles', rolesRoutes);
