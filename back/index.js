@@ -8,6 +8,7 @@ import accommodationRoutes from './routes/accommodationRoutes.js';
 import reservationsRoutes from './routes/reservationsRoutes.js';
 import couponsRoutes from './routes/couponsRoute.js'
 import paymentsRoutes from './routes/paymentsRoutes.js';
+import rolesRoutes from './routes/rolesRoutes.js';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use('/api/accommodations', accommodationRoutes);
 app.use('/api/reservations', reservationsRoutes);
 app.use('/api/coupons', couponsRoutes);
 app.use('/api/payments', paymentsRoutes);
+app.use('/api/roles', rolesRoutes);
 
 
 app.listen(process.env.SERVER_PORT, () => {
