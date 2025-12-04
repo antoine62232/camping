@@ -7,7 +7,7 @@ import noticesRoutes from './routes/noticesRoutes.js';
 import accommodationRoutes from './routes/accommodationRoutes.js';
 import reservationsRoutes from './routes/reservationsRoutes.js';
 import optionsRoutes from './routes/optionsRoutes.js';
-
+import employeesSchedulesRoutes from './routes/employeesSchedulesRoutes.js';
 dotenv.config();
 
 const app = express();
@@ -32,5 +32,7 @@ app.use('/api/notices', noticesRoutes);
 app.use('/api/accommodations', accommodationRoutes);
 app.use('/api/reservations', reservationsRoutes);
 app.use('/api/options', optionsRoutes);
+app.use('/api/employeesSchedules', employeesSchedulesRoutes);
+
 
 
