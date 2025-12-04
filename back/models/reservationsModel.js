@@ -1,4 +1,4 @@
-import connexion from "../config/bdd.js";
+ import connexion from "../config/bdd.js";
 
 const createReservation = async (arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId) => {
     const insertReservation = `
