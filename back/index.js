@@ -7,6 +7,7 @@ import noticesRoutes from './routes/noticesRoutes.js';
 import accommodationRoutes from './routes/accommodationRoutes.js';
 import reservationsRoutes from './routes/reservationsRoutes.js';
 import couponsRoutes from './routes/couponsRoute.js'
+import paymentsRoutes from './routes/paymentsRoutes.js';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use('/api/notices', noticesRoutes);
 app.use('/api/accommodations', accommodationRoutes);
 app.use('/api/reservations', reservationsRoutes);
 app.use('/api/coupons', couponsRoutes);
+app.use('/api/payments', paymentsRoutes);
 
 
 app.listen(process.env.SERVER_PORT, () => {
