@@ -12,6 +12,8 @@ import paymentsRoutes from './routes/paymentsRoutes.js';
 import rolesRoutes from './routes/rolesRoutes.js';
 import optionsRoutes from './routes/optionsRoutes.js';
 import employeesSchedulesRoutes from './routes/employeesSchedulesRoutes.js';
+import reservationsOptionsRoutes from "./routes/reservationsOptionsRoutes.js";
+
 dotenv.config();
 
 const app = express();
@@ -41,6 +43,7 @@ app.use('/api/payments', paymentsRoutes);
 app.use('/api/roles', rolesRoutes);
 app.use('/api/options', optionsRoutes);
 app.use('/api/employeesSchedules', employeesSchedulesRoutes);
+app.use("/api/reservations-options", reservationsOptionsRoutes);
 
 
 
