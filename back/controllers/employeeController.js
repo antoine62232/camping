@@ -37,7 +37,10 @@ const createEmployee = async (req, res) => {
 
         const passwordHash = bcrypt.hashSync(password, 10);
         const addEmployee = await employeeModel.fetchCreateEmployee(lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, passwordHash, phoneNumber, arrivalDate, roleId);
-        res.status(201).json(addEmployee);
+        res.status(201).json({
+        message: "Employé créé avec succès !",
+        id: addEmployee.insertId
+});
 
     } catch (error) {
         res.status(500).json({ message: "Erreur lors de la création d'un employé." });
@@ -56,7 +59,7 @@ const updateEmployee = async (req, res) => {
         }
 
         const passwordHash = bcrypt.hashSync(password, 10);
-        const updateEmployee = await employeeModel.fetchUpdateEmployee(lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, passwordHash, phoneNumber, arrivalDate, roleId, id);
+        const updateEmployee = await employeeModel.fetchUpdateEmployee(id, lastName, firstName, dateOfBirth, streetNumber, streetName, postalCode, city, adressComplement, email, passwordHash, phoneNumber, arrivalDate, roleId);
 
         if (updateEmployee === 0) {
             res.status(404).json({ message: "Employé non trouvé" });
