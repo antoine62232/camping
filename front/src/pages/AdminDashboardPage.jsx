@@ -1,24 +1,39 @@
 import { useState } from "react";
 import { Box, Container, Typography, ButtonGroup, Button } from "@mui/material";
 import { useEmployeeAuth } from "../hooks/useEmployeeAuth";
+import { useNavigate } from "react-router-dom";
 import GestionReservations from "../components/GestionReservations";
 import KPI from "../components/KPI";
 import PlanningRH from "../components/PlanningRH";
 import RapportsFinanciers from "../components/RapportsFinanciers";
 
 function AdminDashboardPage() {
-  const { employee } = useEmployeeAuth();
+  const { employee, logout } = useEmployeeAuth();
+  const navigate = useNavigate();
   const [tab, setTab] = useState("kpi");
   const roleId = employee?.roleId;
 
-  return (
-    <Box sx={{ minHeight: "100vh", bgcolor: "section.main", py: 4 }}>
-      <Container maxWidth="lg">
-        <Typography variant="h4" sx={{ mb: 3 }}>
-          Tableau de bord
-        </Typography>
+  const handleLogout = () => {
+    logout();
+    navigate("/admin/login");
+  };
 
-        <ButtonGroup variant="contained" sx={{ mb: 3 }}>
+  return (
+    <Box sx={{ minHeight: "100vh", bgcolor: "background.default", py: 4 }}>
+      <Container maxWidth="lg">
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
+          <Typography variant="h4">
+            Tableau de bord {employee?.firstName}
+          </Typography>
+          <Button variant="outlined" color="inherit" onClick={handleLogout}>
+            Déconnexion
+          </Button>
+        </Box>
+
+        <ButtonGroup
+          variant="contained"
+          sx={{ mb: 3, bgcolor: "section.main" }}
+        >
           <Button
             onClick={() => setTab("kpi")}
             variant={tab === "kpi" ? "contained" : "outlined"}
@@ -61,13 +76,9 @@ function AdminDashboardPage() {
           )}
         </ButtonGroup>
 
-        {tab === "kpi" && (
-          <KPI />
-        )}
+        {tab === "kpi" && <KPI />}
 
-        {tab === "reservations" && (
-          <GestionReservations />
-        )}
+        {tab === "reservations" && <GestionReservations />}
 
         {tab === "stocks" && (roleId === 1 || roleId === 2) && (
           <div>Gestion des stocks à implémenter.</div>
@@ -77,9 +88,7 @@ function AdminDashboardPage() {
           <RapportsFinanciers />
         )}
 
-        {tab === "rh" && (roleId === 1 || roleId === 3) && (
-          <PlanningRH />
-        )}
+        {tab === "rh" && (roleId === 1 || roleId === 3) && <PlanningRH />}
       </Container>
     </Box>
   );

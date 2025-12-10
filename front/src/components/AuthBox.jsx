@@ -12,6 +12,7 @@ import {
   Stack,
   Grid,
   Link,
+  Tooltip,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useFormik } from "formik";
@@ -27,6 +28,9 @@ function AuthBox() {
 
   const isRegister = tab === 0;
   const isLogin = tab === 1;
+  const handleGoAdmin = () => {
+    navigate("/admin/login");
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -110,6 +114,19 @@ function AuthBox() {
           boxShadow: (theme) => theme.shadows.customSoft,
         }}
       >
+        <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+          <Tooltip title="Espace admin">
+            <IconButton
+              size="small"
+              onClick={handleGoAdmin}
+              aria-label="Espace admin"
+            >
+              <span role="img" aria-hidden="true">
+                ⚙️
+              </span>
+            </IconButton>
+          </Tooltip>
+        </Box>
         <Tabs
           value={tab}
           onChange={(_, v) => {
@@ -520,7 +537,7 @@ function AuthBox() {
               ? "Suivant"
               : "Sauvegarder les informations"}
           </Button>
-          
+
           <Typography
             variant="body2"
             align="center"
