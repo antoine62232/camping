@@ -2,7 +2,6 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Homepage from "./pages/HomePage.jsx";
-import ReservationPage from "./pages/ReservationPage";
 import AuthPage from "./pages/AuthPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
@@ -18,8 +17,6 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/reservation" element={<ReservationPage />} />
-          <Route path="/reservation/:id" element={<ReservationPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route
