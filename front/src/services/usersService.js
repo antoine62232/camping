@@ -9,6 +9,9 @@ export const loginUser = async (data) => {
   return res.data;
 };
 
+export const resetPassword = (data) =>
+  apiClient.put("/users/reset-password", data);
+
 export const getAllUsers = () =>
   apiClient.get("/users/");
 

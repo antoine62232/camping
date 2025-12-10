@@ -133,6 +133,46 @@ const deleteUser = async (req, res) => {
     }
 }
 
+const resetPassword = async (req, res) => {
+  try {
+    const { emailUser, newPassword } = req.body;
+
+    if (!emailUser || !newPassword) {
+      return res
+        .status(400)
+        .json({ message: "Email et nouveau mot de passe requis" });
+    }
+
+    const user = await usersModel.getUserByEmail(emailUser);
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    const passwordHashed = await bcrypt.hash(newPassword, 10);
+
+    const affected = await usersModel.updatePasswordByEmail(
+      emailUser,
+      passwordHashed
+    );
+
+    if (affected === 0) {
+      return res
+        .status(500)
+        .json({ message: "Erreur lors de la mise à jour du mot de passe" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Mot de passe mis à jour avec succès" });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Erreur serveur lors de la réinitialisation du mot de passe" });
+  }
+};
+
+
 
 
 export default {
@@ -141,5 +181,6 @@ export default {
     getUserByEmail,
     login,
     updateUser,
-    deleteUser
+    deleteUser,
+    resetPassword,
 }

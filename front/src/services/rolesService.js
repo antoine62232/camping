@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import apiClient from "../api/apiClient";
 
 export const createRole = (data) =>
   apiClient.post("/roles/register", data);

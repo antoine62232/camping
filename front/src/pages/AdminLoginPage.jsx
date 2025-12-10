@@ -32,7 +32,7 @@ function AdminLoginPage() {
     <Box
       sx={{
         minHeight: "100vh",
-        bgcolor: "section.main",
+        bgcolor: "background.default",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -47,7 +47,7 @@ function AdminLoginPage() {
           px: 3,
           py: 3,
           borderRadius: 3,
-          bgcolor: "background.paper",
+          bgcolor: "section.main",
           boxShadow: (theme) => theme.shadows.customSoft
         }}
       >
