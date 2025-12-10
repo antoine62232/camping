@@ -17,12 +17,17 @@ function GestionReservations() {
 
   useEffect(() => {
     const fetchReservations = async () => {
-      const data = await getAllReservations();
-      const rowsWithId = data.map((res, index) => ({
-        ...res,
-        id: index + 1,
-      }));
-      setReservations(rowsWithId);
+      try {
+        const { data } = await getAllReservations();
+        const rows = data.reservations;
+        const rowsWithId = rows.map((res, index) => ({
+          ...res,
+          id: index + 1,
+        }));
+        setReservations(rowsWithId);
+      } catch (error) {
+        console.error("Erreur reservations:", error);
+      }
     };
 
     fetchReservations();

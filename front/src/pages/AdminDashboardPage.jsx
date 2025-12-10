@@ -3,7 +3,8 @@ import { Box, Container, Typography, ButtonGroup, Button } from "@mui/material";
 import { useEmployeeAuth } from "../hooks/useEmployeeAuth";
 import GestionReservations from "../components/GestionReservations";
 import KPI from "../components/KPI";
-// À créer plus tard : KpiDashboard, GestionStocks, RapportsFinanciers, PlanningRh
+import PlanningRH from "../components/PlanningRH";
+import RapportsFinanciers from "../components/RapportsFinanciers";
 
 function AdminDashboardPage() {
   const { employee } = useEmployeeAuth();
@@ -73,11 +74,11 @@ function AdminDashboardPage() {
         )}
 
         {tab === "finances" && (roleId === 1 || roleId === 2) && (
-          <div>Rapports financiers à implémenter.</div>
+          <RapportsFinanciers />
         )}
 
         {tab === "rh" && (roleId === 1 || roleId === 3) && (
-          <div>Planning RH à implémenter.</div>
+          <PlanningRH />
         )}
       </Container>
     </Box>

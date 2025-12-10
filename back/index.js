@@ -14,6 +14,7 @@ import optionsRoutes from './routes/optionsRoutes.js';
 import employeesSchedulesRoutes from './routes/employeesSchedulesRoutes.js';
 import reservationsOptionsRoutes from "./routes/reservationsOptionsRoutes.js";
 import kpiRoutes from "./routes/kpiRoute.js";
+import financialReportsRoutes from "./routes/financialReportsRoute.js";
 
 dotenv.config();
 
@@ -46,6 +47,8 @@ app.use('/api/options', optionsRoutes);
 app.use('/api/employeesSchedules', employeesSchedulesRoutes);
 app.use("/api/reservations-options", reservationsOptionsRoutes);
 app.use("/api/kpi", kpiRoutes);
+app.use("/api/reports", financialReportsRoutes);
+
 
 
 
