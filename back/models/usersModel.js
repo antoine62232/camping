@@ -49,9 +49,18 @@ const deleteUser = async (IdUser) => {
     return result.affectedRows;
 }
 
+const updatePasswordByEmail = async (emailUser, passwordHashed) => {
+  const [result] = await connexion.query(
+    `
+      UPDATE users
+      SET passwordUser = ?
+      WHERE emailUser = ?;
+    `,
+    [passwordHashed, emailUser]
+  );
 
-
-
+  return result.affectedRows;
+};
 
 
 export default {
@@ -59,6 +68,7 @@ export default {
     getAllUsers,
     getUserByEmail,
     updateUser,
-    deleteUser
+    deleteUser,
+    updatePasswordByEmail
 };
 

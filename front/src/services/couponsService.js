@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import apiClient from "../api/apiClient";
 
 export const createCoupon = (data) =>
   apiClient.post("/coupons/register", data);
