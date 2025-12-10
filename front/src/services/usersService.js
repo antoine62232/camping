@@ -1,3 +1,4 @@
+// src/services/usersService.js
 import apiClient from "../api/apiClient";
 
 export const registerUser = (data) =>
@@ -5,7 +6,6 @@ export const registerUser = (data) =>
 
 export const loginUser = async (data) => {
   const res = await apiClient.post("/users/login", data);
-  localStorage.setItem("clientToken", res.data.token);
   return res.data;
 };
 
