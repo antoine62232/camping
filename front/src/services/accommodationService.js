@@ -1,4 +1,5 @@
-import apiClient from "./apiClient";
+// CORRECTION : On sort du dossier 'services' (..) pour aller dans 'api'
+import apiClient from "../api/apiClient"; 
 
 export const getAllAccommodations = () =>
   apiClient.get("/accommodations/allAccommodations");
