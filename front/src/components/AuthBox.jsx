@@ -1,4 +1,3 @@
-// src/components/AuthBox.jsx
 import { useState } from "react";
 import {
   Box,
@@ -9,17 +8,16 @@ import {
   Button,
   IconButton,
   InputAdornment,
-  Checkbox,
-  FormControlLabel,
   Typography,
   Stack,
   Grid,
+  Link,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useFormik } from "formik";
 import { registerSchema, loginSchema } from "../schemas/authSchema";
 import { registerUser, loginUser } from "../services/usersService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 
 function AuthBox() {
   const navigate = useNavigate();
@@ -59,19 +57,17 @@ function AuthBox() {
             lastNameUser: values.lastName,
             firstNameUser: values.firstName,
             dateOfBirth: values.dateOfBirth,
-            streetNumberUser: values.streetNumber || null,
-            streetNameUser: values.streetName || null,
-            postalCodeUser: values.postalCode || null,
-            cityUser: values.city || null,
+            streetNumberUser: values.streetNumber,
+            streetNameUser: values.streetName,
+            postalCodeUser: values.postalCode,
+            cityUser: values.city,
             adressComplementUser: values.adressComplement || null,
             emailUser: values.email,
             passwordUser: values.password,
             phoneNumberUser: values.phoneNumber,
           });
 
-          setTab(1);
-          setRegisterStep(1);
-          resetForm();
+          setRegisterStep(4);
           return;
         }
 
@@ -121,8 +117,12 @@ function AuthBox() {
             setRegisterStep(1);
           }}
           textColor="primary"
-          TabIndicatorProps={{ style: { backgroundColor: "#2E8B57" } }}
-          sx={{ mb: 2 }}
+          sx={{
+            mb: 2,
+            "& .MuiTabs-indicator": {
+              backgroundColor: "#2E8B57",
+            },
+          }}
         >
           <Tab
             label="S’enregistrer"
@@ -464,6 +464,47 @@ function AuthBox() {
               />
             </>
           )}
+          {isRegister && registerStep === 4 && (
+            <Box textAlign="center" sx={{ py: 4 }}>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: 160,
+                  bgcolor: "primary.main",
+                  borderRadius: 3,
+                  mb: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "textondark.default",
+                  fontSize: 24,
+                  fontWeight: 700,
+                }}
+              >
+                Inscription réussie !
+              </Box>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Votre inscription est maintenant réussie !
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                Vous pouvez maintenant accéder au site et réserver votre séjour.
+              </Typography>
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                sx={{ borderRadius: 999, py: 1.1 }}
+                onClick={() => {
+                  f.resetForm();
+                  setTab(1);
+                  setRegisterStep(1);
+                  navigate("/");
+                }}
+              >
+                Aller sur le site
+              </Button>
+            </Box>
+          )}
 
           {/* BOUTON PRINCIPAL */}
           <Button
@@ -479,6 +520,21 @@ function AuthBox() {
               ? "Suivant"
               : "Sauvegarder les informations"}
           </Button>
+          
+          <Typography
+            variant="body2"
+            align="center"
+            sx={{ mt: 2, fontSize: 12 }}
+          >
+            Espace employé ?{" "}
+            <Link
+              component={RouterLink}
+              to="/admin/login"
+              sx={{ color: "primary.main", fontWeight: 600 }}
+            >
+              Se connecter ici
+            </Link>
+          </Typography>
         </Box>
       </Paper>
     </Box>
