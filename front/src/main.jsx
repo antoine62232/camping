@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App.jsx";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import theme from "./theme";
+import { EmployeeAuthProvider } from "./context/EmployeeAuthContext";
 
 createRoot(document.getElementById("root")).render(
   <ThemeProvider theme={theme}>
     <StrictMode>
       <CssBaseline enableColorScheme />
-      <App />
+      <EmployeeAuthProvider>
+        <App />
+      </EmployeeAuthProvider>
     </StrictMode>
   </ThemeProvider>
 );
