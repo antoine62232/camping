@@ -1,4 +1,4 @@
-import apiClient from "./apiClient";
+import apiClient from "../api/apiClient";
 
 export const createReservation = (data) =>
   apiClient.post("/reservations/register", data);
