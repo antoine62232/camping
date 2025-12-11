@@ -1,6 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import ActuPage from './pages/ActuPage';
+import ReservationPage from './pages/ReservationPage';
 import Homepage from "./pages/HomePage.jsx";
 import AuthPage from "./pages/AuthPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
@@ -15,8 +16,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Navbar />
-
+        <Navbar>
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/auth" element={<AuthPage />} />
@@ -31,7 +31,9 @@ function App() {
           />
           <Route path="/reservation" element={<ReservationPage/>}/>
           <Route path="/reservation/confirmation" element={<ConfirmationPage/>}/>
+          <Route path="/actus" element={<ActuPage />} />
         </Routes>
+        </Navbar>
       </BrowserRouter>
     </>
   );

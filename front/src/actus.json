@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "title": "Ouverture de l'Espace Aquatique",
+    "date": "2024-06-15",
+    "text": "Le tout nouveau toboggan 'Cobra' est enfin prêt ! Venez découvrir notre espace aquatique rénové avec sa piscine chauffée et son solarium agrandi pour plus de détente.",
+    "img": "/assets/actus/piscine-ouverture.png"
+  },
+  {
+    "id": 2,
+    "title": "Concert : The Summer Vibes",
+    "date": "2024-07-20",
+    "text": "Ne manquez pas le concert exceptionnel du groupe local 'The Summer Vibes' sur la grande scène du camping. Pop, Rock et bonne humeur au programme dès 21h.",
+    "img": "/assets/actus/concert.png"
+  },
+  {
+    "id": 3,
+    "title": "Atelier Yoga en Plein Air",
+    "date": "2024-07-22",
+    "text": "Reconnectez-vous avec la nature. Tous les mardis et jeudis matin, retrouvez Sarah pour une séance de Hatha Yoga face à la forêt. Inscription à la réception.",
+    "img": "/assets/actus/yoga.png"
+  },
+  {
+    "id": 4,
+    "title": "Soirée Moules-Frites",
+    "date": "2024-07-25",
+    "text": "La tradition du vendredi soir ! Venez déguster nos fameuses moules de bouchot accompagnées de frites fraîches au restaurant 'La Paillote'. Réservation conseillée.",
+    "img": "/assets/actus/repas.png"
+  }
+]
