@@ -22,7 +22,7 @@ function ReservationPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { accommodationId, startDate, endDate, adults, children } =
+  const { accommodationId, startDate, endDate, adults, children, selectedOptions: initialSelectedOptions } =
     location.state || {};
 
   // State de la recherche actuelle
@@ -39,7 +39,7 @@ function ReservationPage() {
   const [accommodations, setAccommodations] = useState([]);
   const [options, setOptions] = useState([]);
   
-  const [selectedOptions, setSelectedOptions] = useState({});
+  const [selectedOptions, setSelectedOptions] = useState(initialSelectedOptions || {});
   
   const selectedAccommodation = useMemo(
     () =>
