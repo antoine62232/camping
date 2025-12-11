@@ -9,6 +9,7 @@ import AdminDashboardPage from "./pages/AdminDashboardPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/NavBar";
 import AccommodationPage from "./pages/AccommodationPage.jsx";
+import Contact from "./pages/Contact.jsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route path="/accommodation/:id" element={<AccommodationPage />} />
+          <Route path="/contact" element={<Contact />} />
           <Route
             path="/admin"
             element={
