@@ -16,10 +16,13 @@ import {
   CardContent,
   IconButton,
   CircularProgress,
+  Avatar,
 } from "@mui/material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 // Icônes
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -36,6 +39,7 @@ import ReservationSearchBar from "../components/ReservationSearchBar";
 
 // Service
 import { getAllAccommodations } from "../services/accommodationService";
+import { getAllNotices } from "../services/noticesService";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -43,6 +47,8 @@ const Homepage = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true); // Ajout d'un état de chargement
   const [activeFilter, setActiveFilter] = useState("chambres");
+  const [notices, setNotices] = useState([]);
+  const [randomNotices, setRandomNotices] = useState([]);
 
   // --- CONNEXION AU BACK-END ---
   useEffect(() => {
@@ -70,6 +76,33 @@ const Homepage = () => {
       .catch((error) => {
         console.error("Erreur API :", error);
         setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    getAllNotices()
+      .then((res) => {
+        console.log("NOTICES API ===>", res.data);
+
+        let all = res.data;
+
+        // Sécurisation : on force un tableau
+        if (!Array.isArray(all)) {
+          all = all?.notices || all?.data || [];
+        }
+
+        setNotices(all);
+
+        if (all.length > 0) {
+          const shuffled = [...all].sort(() => Math.random() - 0.5);
+          setRandomNotices(shuffled.slice(0, 3));
+        } else {
+          setRandomNotices([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Erreur notices", err);
+        setRandomNotices([]);
       });
   }, []);
 
@@ -416,6 +449,145 @@ const Homepage = () => {
               </Card>
             </Grid>
           ))}
+        </Grid>
+      </Container>
+
+      <Container sx={{ mb: 8, justifyItems: "center" }}>
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          textAlign="center"
+          textTransform="uppercase"
+          gutterBottom
+        >
+          Leur avis comptent pour nous
+        </Typography>
+
+        <Grid container spacing={4} alignItems="stretch">
+          {/* Image à gauche */}
+          <Grid item xs={12} md={6}>
+            <Paper
+              sx={{
+                height: 360,
+                width: 340,
+                borderRadius: 3,
+                overflow: "hidden",
+              }}
+              elevation={0}
+            >
+              <Box
+                component="img"
+                src="https://images.pexels.com/photos/12099298/pexels-photo-12099298.jpeg?auto=compress&cs=tinysrgb&w=800"
+                alt="Client satisfait"
+                sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            </Paper>
+          </Grid>
+
+          {/* Avis à droite */}
+          <Grid item xs={12} md={6}>
+            <Paper
+              sx={{
+                height: 360,
+                borderRadius: 3,
+                p: 2.5,
+                display: "flex",
+                flexDirection: "column",
+                bgcolor: "#FBE9DD",
+              }}
+              elevation={0}
+            >
+              <Typography
+                variant="subtitle1"
+                fontWeight="bold"
+                textAlign="center"
+                gutterBottom
+              >
+                Leur avis
+              </Typography>
+
+              <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+                {/* Flèche gauche */}
+                <IconButton size="small">
+                  <ArrowBackIosNewIcon fontSize="small" />
+                </IconButton>
+
+                {/* Colonne avis */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    flexGrow: 1,
+                    gap: 1.5,
+                    px: 1,
+                  }}
+                >
+                  {randomNotices.map((n) => (
+                    <Box
+                      key={n.idNotice}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1.5,
+                      }}
+                    >
+                      <Avatar
+                        sx={{ width: 48, height: 48 }}
+                        src={undefined} // si plus tard tu as un champ avatar
+                      >
+                        {n.firstNameUser?.[0]}
+                        {n.lastNameUser?.[0]}
+                      </Avatar>
+
+                      <Box
+                        sx={{
+                          flexGrow: 1,
+                          bgcolor: "#2E8B57",
+                          borderRadius: 3,
+                          p: 1.2,
+                          minHeight: 48,
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Typography
+                          variant="body2"
+                          color="white"
+                          noWrap
+                          sx={{ fontWeight: 500 }}
+                        >
+                          {n.comment}
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          sx={{ color: "rgba(255,255,255,0.8)", mt: 0.5 }}
+                        >
+                          {n.firstNameUser} {n.lastNameUser} – {n.note}/5
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ))}
+
+                  {randomNotices.length === 0 && (
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      textAlign="center"
+                      sx={{ mt: 2 }}
+                    >
+                      Aucun avis pour le moment.
+                    </Typography>
+                  )}
+                </Box>
+
+                {/* Flèche droite */}
+                <IconButton size="small">
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </Box>
+            </Paper>
+          </Grid>
         </Grid>
       </Container>
 
