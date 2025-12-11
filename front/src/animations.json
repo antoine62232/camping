@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "Animations en journée",
+    "desc": "Laser Game, Bubble Game, Z-Tag ou encore Fun Boyard... Découvrez l'ensemble de nos 8 activités complètement folles à proposer en journée à nos vacanciers. Fous rires garantis pour toute la famille !",
+    "image": "/assets/animations/journee.png"
+  },
+  {
+    "id": 2,
+    "title": "Animations en soirée",
+    "desc": "Grande soirée ESCAPE GAME, Karaoké géant ou Spectacle de magie. Nous proposons des soirées à thèmes chaque soir pour finir la journée en beauté. Ambiance conviviale et festive au bar du camping.",
+    "image": "/assets/animations/soiree.png"
+  },
+  {
+    "id": 3,
+    "title": "Jeux libres & Nature",
+    "desc": "Proposez des expériences inoubliables à nos clients. Nos aventures géolocalisées sur smartphone sont une véritable innovation qui va vous permettre de proposer une expérience de jeu outdoor unique.",
+    "image": "/assets/animations/jeux-libres.png"
+  }
+]
