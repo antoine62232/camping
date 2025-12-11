@@ -51,22 +51,17 @@ const Homepage = () => {
         const rawData = response.data;
         console.log("Données reçues du Back :", rawData);
 
-        // MAPPING SQL -> REACT
+        // Mapping SQL -> React
         const formattedData = rawData.map((item) => ({
-          // On sécurise l'ID (au cas où le nom change un jour)
           id: item.idAccommodation,
-
           title: item.typeAccommodation || "Hébergement",
-          
-          // --- MODIFICATION ICI : Plus de replace(), on affiche direct ---
           location: item.descriptionAccommodation || "Camping Beauvert",
-          
           price: item.basePriceAccommodation || 0,
           rating: 4.5, // Valeur par défaut
           reviews: 24, // Valeur par défaut
-          
-          // Image de la BDD ou image par défaut
-          img: item.imageAccommodation || "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80",
+          img:
+            item.imageAccommodation ||
+            "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80",
         }));
 
         setResults(formattedData);
@@ -101,6 +96,7 @@ const Homepage = () => {
     autoplaySpeed: 3000,
   };
 
+  console.log("HOME results pour SearchBar", results);
   return (
     <Box sx={{ bgcolor: "#f9f9f9" }}>
       {/* Header Hero */}
@@ -263,9 +259,16 @@ const Homepage = () => {
                       variant="contained"
                       size="small"
                       sx={{ bgcolor: "#548C5C" }}
-                      onClick={(e) => {
-                          navigate(`/accommodation/${item.id}`);
-                      }}
+                      onClick={() =>
+                        navigate("/reservation", {
+                          state: {
+                            accommodationId: item.id,
+                            title: item.title,
+                            description: item.location,
+                            basePriceAccommodation: Number(item.price),
+                          },
+                        })
+                      }
                     >
                       Réserver
                     </Button>

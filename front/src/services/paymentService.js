@@ -14,3 +14,6 @@ export const updatePayment = (id, data) =>
 
 export const deletePayment = (id) =>
   apiClient.delete(`/payments/delete/${id}`);
+
+export const createPaymentIntent = (amountInCents) =>
+  apiClient.post("/payments/create-payment-intent", { amount: amountInCents });

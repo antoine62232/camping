@@ -16,6 +16,8 @@
     "@mui/material": "^7.3.6",
     "@mui/x-data-grid": "^8.21.0",
     "@mui/x-date-pickers": "^8.21.0",
+    "@stripe/react-stripe-js": "^5.4.1",
+    "@stripe/stripe-js": "^8.5.3",
     "axios": "^1.13.2",
     "dayjs": "^1.11.19",
     "formik": "^2.4.9",
