@@ -43,12 +43,11 @@ const Homepage = () => {
     getAllAccommodations()
       .then((response) => {
         const api = response.data;
-        console.log("Données reçues via Axios :", api);
 
         // Mapping des données (SQL -> Front)
-        const formattedData = api.map((item) => ({
+        const formattedData = api.map((item) => {
+          return {
           id: item.idAccommodation,
-          
           title: item.typeAccommodation || "Hébergement",
           location: item.descriptionAccommodation || "Camping Beauvert",
           rating: 4.5, // Valeur par défaut
@@ -56,7 +55,7 @@ const Homepage = () => {
           price: item.basePriceAccommodation || 0,
           // Image par défaut
           img: "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80",
-        }));
+        }});
 
         setResults(formattedData);
       })
@@ -88,6 +87,7 @@ const Homepage = () => {
     autoplaySpeed: 3000,
   };
 
+  console.log("HOME results pour SearchBar", results);
   return (
     <Box sx={{ bgcolor: "#f9f9f9" }}>
       {/* header */}
