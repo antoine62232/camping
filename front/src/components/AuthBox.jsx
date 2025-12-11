@@ -12,11 +12,16 @@ import {
   Stack,
   Grid,
   Link,
+  Tooltip,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff, ArrowBack } from "@mui/icons-material";
 import { useFormik } from "formik";
 import { registerSchema, loginSchema } from "../schemas/authSchema";
-import { registerUser, loginUser } from "../services/usersService";
+import {
+  registerUser,
+  loginUser,
+  resetPassword,
+} from "../services/usersService";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 
 function AuthBox() {
@@ -24,9 +29,13 @@ function AuthBox() {
   const [tab, setTab] = useState(1);
   const [registerStep, setRegisterStep] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
+  const [forgotStep, setForgotStep] = useState(0);
 
   const isRegister = tab === 0;
   const isLogin = tab === 1;
+  const handleGoAdmin = () => {
+    navigate("/admin/login");
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -71,6 +80,15 @@ function AuthBox() {
           return;
         }
 
+        if (isLogin && forgotStep === 1) {
+          await resetPassword({
+            emailUser: values.email, 
+            newPassword: values.password,
+          });
+          setForgotStep(2);
+          return;
+        }
+
         const data = await loginUser({
           emailUser: values.email,
           passwordUser: values.password,
@@ -110,6 +128,19 @@ function AuthBox() {
           boxShadow: (theme) => theme.shadows.customSoft,
         }}
       >
+        <Box sx={{ position: "absolute", top: 8, right: 8 }}>
+          <Tooltip title="Espace admin">
+            <IconButton
+              size="small"
+              onClick={handleGoAdmin}
+              aria-label="Espace admin"
+            >
+              <span role="img" aria-hidden="true">
+                ⚙️
+              </span>
+            </IconButton>
+          </Tooltip>
+        </Box>
         <Tabs
           value={tab}
           onChange={(_, v) => {
@@ -183,7 +214,7 @@ function AuthBox() {
         </Typography>
 
         <Box component="form" onSubmit={f.handleSubmit} noValidate>
-          {isLogin && (
+          {isLogin && forgotStep === 0 && (
             <>
               <TextField
                 margin="dense"
@@ -234,6 +265,7 @@ function AuthBox() {
                   fontSize: 13,
                   cursor: "pointer",
                 }}
+                onClick={() => setForgotStep(1)}
               >
                 Mot de passe oublié ? Cliquez ici
               </Typography>
@@ -350,6 +382,107 @@ function AuthBox() {
                 }}
               />
             </>
+          )}
+
+          {isLogin && forgotStep === 1 && (
+            <>
+              <Box sx={{ position: "absolute", top: 8, left: 8 }}>
+                <Tooltip title="Retour à la connexion">
+                  <IconButton
+                    size="small"
+                    onClick={() => {
+                      setForgotStep(0);
+                    }}
+                    aria-label="Retour"
+                  >
+                    <ArrowBack fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+              <Typography variant="body2" sx={{ mb: 1 }}>
+                Réinitialiser votre mot de passe
+              </Typography>
+
+              <TextField
+                margin="dense"
+                fullWidth
+                label="Adresse email"
+                name="email"
+                type="email"
+                size="small"
+                value={f.values.email}
+                onChange={f.handleChange}
+                onBlur={f.handleBlur}
+                error={f.touched.email && Boolean(f.errors.email)}
+                helperText={f.touched.email && f.errors.email}
+              />
+
+              <TextField
+                margin="dense"
+                fullWidth
+                label="Nouveau mot de passe"
+                name="password"
+                size="small"
+                type={showPassword ? "text" : "password"}
+                value={f.values.password}
+                onChange={f.handleChange}
+                onBlur={f.handleBlur}
+                error={f.touched.password && Boolean(f.errors.password)}
+                helperText={
+                  f.touched.password && f.errors.password
+                    ? f.errors.password
+                    : "8+ caractères"
+                }
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        edge="end"
+                        onClick={() => setShowPassword((s) => !s)}
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </>
+          )}
+
+          {isLogin && forgotStep === 2 && (
+            <Box textAlign="center" sx={{ py: 4 }}>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: 160,
+                  bgcolor: "primary.main",
+                  borderRadius: 3,
+                  mb: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "textondark.default",
+                  fontSize: 24,
+                  fontWeight: 700,
+                }}
+              >
+                Mot de passe réinitialisé
+              </Box>
+              <Typography variant="body2" sx={{ mb: 2 }}>
+                Vous pouvez maintenant vous reconnecter avec votre nouveau mot
+                de passe.
+              </Typography>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={() => {
+                  setForgotStep(0);
+                  f.resetForm();
+                }}
+              >
+                Retour à la connexion
+              </Button>
+            </Box>
           )}
 
           {isRegister && registerStep === 2 && (
@@ -515,12 +648,14 @@ function AuthBox() {
             sx={{ borderRadius: 999, py: 1.1, mt: 2 }}
           >
             {isLogin
-              ? "Se connecter"
+              ? forgotStep === 1
+                ? "Mettre à jour le mot de passe"
+                : "Se connecter"
               : registerStep < 3
               ? "Suivant"
               : "Sauvegarder les informations"}
           </Button>
-          
+
           <Typography
             variant="body2"
             align="center"

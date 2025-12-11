@@ -1,24 +1,41 @@
-import './App.css'
-import ReservationPage from './pages/ReservationPage';
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ActuPage from './pages/ActuPage';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ReservationPage from './pages/ReservationPage';
+import Homepage from "./pages/HomePage.jsx";
 import AuthPage from "./pages/AuthPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
-import Navbar from './components/NavBar'; 
+import AdminDashboardPage from "./pages/AdminDashboardPage";
+
+import ProtectedRoute from "./components/ProtectedRoute";
+import Navbar from "./components/NavBar";
+import ReservationPage from "./pages/ReservationPage.jsx";
+import ConfirmationPage from "./pages/ConfirmationPage.jsx"
+
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar>
-        
+    <>
+      <BrowserRouter>
+        <Navbar>
         <Routes>
-          <Route path="/reservation" element={<ReservationPage />} />
-          <Route path="/actus" element={<ActuPage />} />
+          <Route path="/" element={<Homepage />} />
           <Route path="/auth" element={<AuthPage />} />
-          <Route path="/admin-login" element={<AdminLoginPage />} />
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute allowedRoles={[1, 2, 3]}>
+                <AdminDashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/reservation" element={<ReservationPage/>}/>
+          <Route path="/reservation/confirmation" element={<ConfirmationPage/>}/>
+          <Route path="/actus" element={<ActuPage />} />
         </Routes>
-    
-      </Navbar> 
-    </BrowserRouter>
+        </Navbar>
+      </BrowserRouter>
+    </>
   );
 }
 

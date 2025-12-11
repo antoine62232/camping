@@ -1,5 +1,4 @@
-// src/services/reservationsOptionsService.js
-import apiClient from "./apiClient";
+import apiClient from "../api/apiClient";
 
 export const addReservationOption = (data) =>
   apiClient.post("/reservations-options/add", data);
