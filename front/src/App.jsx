@@ -9,6 +9,7 @@ import AdminDashboardPage from "./pages/AdminDashboardPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/NavBar";
 import ReservationPage from "./pages/ReservationPage.jsx";
+import ConfirmationPage from "./pages/ConfirmationPage.jsx"
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             }
           />
           <Route path="/reservation" element={<ReservationPage/>}/>
+          <Route path="/reservation/confirmation" element={<ConfirmationPage/>}/>
         </Routes>
       </BrowserRouter>
     </>

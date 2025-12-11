@@ -382,7 +382,7 @@ const Homepage = () => {
                       variant="contained"
                       size="small"
                       sx={{ bgcolor: "#548C5C" }}
-                      onClick={() => navigate(`/reservation/${item.id}`)}
+                      onClick={() => navigate(`/reservation`)}
                     >
                       Réserver
                     </Button>
