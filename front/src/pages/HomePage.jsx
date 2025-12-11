@@ -15,11 +15,14 @@ import {
   CardMedia,
   CardContent,
   IconButton,
-  CircularProgress
+  CircularProgress,
+  Avatar,
 } from "@mui/material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 // Icônes
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -36,6 +39,7 @@ import ReservationSearchBar from "../components/ReservationSearchBar";
 
 // Service
 import { getAllAccommodations } from "../services/accommodationService";
+import { getAllNotices } from "../services/noticesService";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -43,6 +47,8 @@ const Homepage = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true); // Ajout d'un état de chargement
   const [activeFilter, setActiveFilter] = useState("chambres");
+  const [notices, setNotices] = useState([]);
+  const [randomNotices, setRandomNotices] = useState([]);
 
   // --- CONNEXION AU BACK-END ---
   useEffect(() => {
@@ -51,22 +57,17 @@ const Homepage = () => {
         const rawData = response.data;
         console.log("Données reçues du Back :", rawData);
 
-        // MAPPING SQL -> REACT
+        // Mapping SQL -> React
         const formattedData = rawData.map((item) => ({
-          // On sécurise l'ID (au cas où le nom change un jour)
           id: item.idAccommodation,
-
           title: item.typeAccommodation || "Hébergement",
-          
-          // --- MODIFICATION ICI : Plus de replace(), on affiche direct ---
           location: item.descriptionAccommodation || "Camping Beauvert",
-          
           price: item.basePriceAccommodation || 0,
           rating: 4.5, // Valeur par défaut
           reviews: 24, // Valeur par défaut
-          
-          // Image de la BDD ou image par défaut
-          img: item.imageAccommodation || "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80",
+          img:
+            item.imageAccommodation ||
+            "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80",
         }));
 
         setResults(formattedData);
@@ -75,6 +76,33 @@ const Homepage = () => {
       .catch((error) => {
         console.error("Erreur API :", error);
         setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    getAllNotices()
+      .then((res) => {
+        console.log("NOTICES API ===>", res.data);
+
+        let all = res.data;
+
+        // Sécurisation : on force un tableau
+        if (!Array.isArray(all)) {
+          all = all?.notices || all?.data || [];
+        }
+
+        setNotices(all);
+
+        if (all.length > 0) {
+          const shuffled = [...all].sort(() => Math.random() - 0.5);
+          setRandomNotices(shuffled.slice(0, 3));
+        } else {
+          setRandomNotices([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Erreur notices", err);
+        setRandomNotices([]);
       });
   }, []);
 
@@ -101,6 +129,7 @@ const Homepage = () => {
     autoplaySpeed: 3000,
   };
 
+  console.log("HOME results pour SearchBar", results);
   return (
     <Box sx={{ bgcolor: "#f9f9f9" }}>
       {/* Header Hero */}
@@ -108,7 +137,8 @@ const Homepage = () => {
         sx={{
           height: "60vh",
           width: "100%",
-          backgroundImage: 'url("https://www.camping-news.net/wp-content/uploads/2025/03/110320251741717473.webp")',
+          backgroundImage:
+            'url("https://www.camping-news.net/wp-content/uploads/2025/03/110320251741717473.webp")',
           backgroundSize: "cover",
           backgroundPosition: "center",
           display: "flex",
@@ -119,18 +149,34 @@ const Homepage = () => {
           mb: 8,
         }}
       >
-        <Box sx={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, bgcolor: "rgba(0,0,0,0.3)" }} />
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            bgcolor: "rgba(0,0,0,0.3)",
+          }}
+        />
         <Typography
           variant="h3"
           component="h1"
           color="white"
           fontWeight="bold"
           textAlign="center"
-          sx={{ position: "relative", zIndex: 1, textTransform: "uppercase", px: 2 }}
+          sx={{
+            position: "relative",
+            zIndex: 1,
+            textTransform: "uppercase",
+            px: 2,
+          }}
         >
           Bienvenue au camping Beauvert !
         </Typography>
-        <Box sx={{ position: "relative", zIndex: 1, width: "90%", maxWidth: 900 }}>
+        <Box
+          sx={{ position: "relative", zIndex: 1, width: "90%", maxWidth: 900 }}
+        >
           <ReservationSearchBar
             accommodations={results}
             onSearch={(search) => {
@@ -141,15 +187,20 @@ const Homepage = () => {
       </Box>
 
       <Container sx={{ textAlign: "center", mb: 4 }}>
-        <Typography variant="h5" fontWeight="bold" textTransform="uppercase" gutterBottom>
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          textTransform="uppercase"
+          gutterBottom
+        >
           Laissez-nous vous surprendre !
         </Typography>
       </Container>
 
       {/* SLIDER ou Chargement */}
       {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: 5 }}>
-            <CircularProgress color="success" />
+        <Box sx={{ display: "flex", justifyContent: "center", mb: 5 }}>
+          <CircularProgress color="success" />
         </Box>
       ) : results.length > 0 ? (
         <Box sx={{ width: "50%", margin: "0 auto", mb: 8 }}>
@@ -176,30 +227,66 @@ const Homepage = () => {
                   <Box
                     sx={{
                       width: "60%",
-                      p: 3, pl: 4,
+                      p: 3,
+                      pl: 4,
                       color: "white",
-                      display: "flex", flexDirection: "column", justifyContent: "space-between",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
                     }}
                   >
                     <Box>
-                      <Typography variant="h4" fontWeight="bold" sx={{ mb: 1 }}>{slide.title}</Typography>
-                      <Typography variant="body1" sx={{ opacity: 0.9 }}>{slide.location}</Typography>
-                      <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
-                        <Rating value={Number(slide.rating)} precision={0.5} readOnly size="small" sx={{ color: "#FFD700" }} />
-                        <Typography variant="body2" sx={{ ml: 1, color: "white", opacity: 0.9 }}>{slide.reviews} avis</Typography>
+                      <Typography variant="h4" fontWeight="bold" sx={{ mb: 1 }}>
+                        {slide.title}
+                      </Typography>
+                      <Typography variant="body1" sx={{ opacity: 0.9 }}>
+                        {slide.location}
+                      </Typography>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", mt: 1 }}
+                      >
+                        <Rating
+                          value={Number(slide.rating)}
+                          precision={0.5}
+                          readOnly
+                          size="small"
+                          sx={{ color: "#FFD700" }}
+                        />
+                        <Typography
+                          variant="body2"
+                          sx={{ ml: 1, color: "white", opacity: 0.9 }}
+                        >
+                          {slide.reviews} avis
+                        </Typography>
                       </Box>
                     </Box>
                     <Box>
-                      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                          <Typography variant="body1">Dates disponibles</Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "flex-end",
+                        }}
+                      >
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                        >
+                          <Typography variant="body1">
+                            Dates disponibles
+                          </Typography>
                           <CalendarTodayIcon fontSize="small" />
                         </Box>
-                        <Typography variant="h4" fontWeight="bold">A partir de {slide.price}€</Typography>
+                        <Typography variant="h4" fontWeight="bold">
+                          A partir de {slide.price}€
+                        </Typography>
                       </Box>
-                      <Divider sx={{ bgcolor: "white", mt: 1, mb: 2, opacity: 0.6 }} />
+                      <Divider
+                        sx={{ bgcolor: "white", mt: 1, mb: 2, opacity: 0.6 }}
+                      />
                       <Stack direction="row" spacing={3}>
-                        <BedIcon /><LocalCafeIcon /><WifiIcon />
+                        <BedIcon />
+                        <LocalCafeIcon />
+                        <WifiIcon />
                       </Stack>
                     </Box>
                   </Box>
@@ -209,7 +296,9 @@ const Homepage = () => {
           </Slider>
         </Box>
       ) : (
-        <Typography textAlign="center" sx={{ mb: 5, color: "gray" }}>Aucun hébergement disponible.</Typography>
+        <Typography textAlign="center" sx={{ mb: 5, color: "gray" }}>
+          Aucun hébergement disponible.
+        </Typography>
       )}
 
       {/* Boutons Tri */}
@@ -219,10 +308,48 @@ const Homepage = () => {
         </Typography>
       </Container>
       <Box sx={{ display: "flex", justifyContent: "center", mb: 6 }}>
-        <ButtonGroup variant="outlined" sx={{ bgcolor: "white", "& .MuiButton-root": { borderColor: "#2E8B57", color: "#2E8B57", px: 4, py: 1.5 } }}>
-          <Button onClick={sortingByBedroom}>Par chambres</Button>
-          <Button onClick={sortingByPrice}>Par prix</Button>
-          <Button onClick={sortingByRating}>Par avis</Button>
+        <ButtonGroup
+          variant="outlined"
+          sx={{
+            bgcolor: "white",
+            "& .MuiButton-root": {
+              borderColor: "#2E8B57",
+              color: "#2E8B57",
+              px: 4,
+              py: 1.5,
+            },
+          }}
+        >
+          <Button
+            onClick={sortingByBedroom}
+            sx={
+              activeFilter === "chambres"
+                ? { bgcolor: "#2E8B57 !important", color: "white !important" }
+                : {}
+            }
+          >
+            Par chambres
+          </Button>
+          <Button
+            onClick={sortingByPrice}
+            sx={
+              activeFilter === "prix"
+                ? { bgcolor: "#2E8B57 !important", color: "white !important" }
+                : {}
+            }
+          >
+            Par prix
+          </Button>
+          <Button
+            onClick={sortingByRating}
+            sx={
+              activeFilter === "avis"
+                ? { bgcolor: "#2E8B57 !important", color: "white !important" }
+                : {}
+            }
+          >
+            Par avis
+          </Button>
         </ButtonGroup>
       </Box>
 
@@ -237,35 +364,83 @@ const Homepage = () => {
                 sx={{
                   borderRadius: 3,
                   height: "100%",
-                  display: "flex", flexDirection: "column",
+                  display: "flex",
+                  flexDirection: "column",
                   boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
                   transition: "0.3s ease",
                   cursor: "pointer",
-                  "&:hover": { transform: "translateY(-5px)", boxShadow: "0 12px 24px rgba(0,0,0,0.2)" },
+                  "&:hover": {
+                    transform: "translateY(-5px)",
+                    boxShadow: "0 12px 24px rgba(0,0,0,0.2)",
+                  },
                 }}
               >
-                <CardMedia component="img" height="200" image={item.img} alt={item.title} />
+                <CardMedia
+                  component="img"
+                  height="200"
+                  image={item.img}
+                  alt={item.title}
+                />
                 <CardContent>
-                  <Typography variant="h6" fontWeight="bold" gutterBottom>{item.title}</Typography>
-                  <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-                    <Typography variant="body2" color="text.secondary">{item.location}</Typography>
+                  <Typography variant="h6" fontWeight="bold" gutterBottom>
+                    {item.title}
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      mb: 2,
+                    }}
+                  >
+                    <Typography variant="body2" color="text.secondary">
+                      {item.location}
+                    </Typography>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <Rating value={Number(item.rating)} precision={0.5} readOnly size="small" />
-                      <Typography variant="caption" sx={{ ml: 0.5 }}>({item.reviews})</Typography>
+                      <Rating
+                        value={Number(item.rating)}
+                        precision={0.5}
+                        readOnly
+                        size="small"
+                      />
+                      <Typography variant="caption" sx={{ ml: 0.5 }}>
+                        ({item.reviews})
+                      </Typography>
                     </Box>
                   </Box>
                   <Divider sx={{ my: 1 }} />
-                  <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      mt: 2,
+                    }}
+                  >
                     <Typography variant="h6" color="#548C5C" fontWeight="bold">
-                      {item.price}€ <Typography component="span" variant="body2" color="text.secondary">/ nuit</Typography>
+                      {item.price}€{" "}
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        color="text.secondary"
+                      >
+                        / nuit
+                      </Typography>
                     </Typography>
                     <Button
                       variant="contained"
                       size="small"
                       sx={{ bgcolor: "#548C5C" }}
-                      onClick={(e) => {
-                          navigate(`/accommodation/${item.id}`);
-                      }}
+                      onClick={() =>
+                        navigate("/reservation", {
+                          state: {
+                            accommodationId: item.id,
+                            title: item.title,
+                            description: item.location,
+                            basePriceAccommodation: Number(item.price),
+                          },
+                        })
+                      }
                     >
                       Réserver
                     </Button>
@@ -277,27 +452,198 @@ const Homepage = () => {
         </Grid>
       </Container>
 
+      <Container sx={{ mb: 8, justifyItems: "center" }}>
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          textAlign="center"
+          textTransform="uppercase"
+          gutterBottom
+        >
+          Leur avis comptent pour nous
+        </Typography>
+
+        <Grid container spacing={4} alignItems="stretch">
+          {/* Image à gauche */}
+          <Grid item xs={12} md={6}>
+            <Paper
+              sx={{
+                height: 360,
+                width: 340,
+                borderRadius: 3,
+                overflow: "hidden",
+              }}
+              elevation={0}
+            >
+              <Box
+                component="img"
+                src="https://images.pexels.com/photos/12099298/pexels-photo-12099298.jpeg?auto=compress&cs=tinysrgb&w=800"
+                alt="Client satisfait"
+                sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            </Paper>
+          </Grid>
+
+          {/* Avis à droite */}
+          <Grid item xs={12} md={6}>
+            <Paper
+              sx={{
+                height: 360,
+                borderRadius: 3,
+                p: 2.5,
+                display: "flex",
+                flexDirection: "column",
+                bgcolor: "#FBE9DD",
+              }}
+              elevation={0}
+            >
+              <Typography
+                variant="subtitle1"
+                fontWeight="bold"
+                textAlign="center"
+                gutterBottom
+              >
+                Leur avis
+              </Typography>
+
+              <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+                {/* Flèche gauche */}
+                <IconButton size="small">
+                  <ArrowBackIosNewIcon fontSize="small" />
+                </IconButton>
+
+                {/* Colonne avis */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    flexGrow: 1,
+                    gap: 1.5,
+                    px: 1,
+                  }}
+                >
+                  {randomNotices.map((n) => (
+                    <Box
+                      key={n.idNotice}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1.5,
+                      }}
+                    >
+                      <Avatar
+                        sx={{ width: 48, height: 48 }}
+                        src={undefined} // si plus tard tu as un champ avatar
+                      >
+                        {n.firstNameUser?.[0]}
+                        {n.lastNameUser?.[0]}
+                      </Avatar>
+
+                      <Box
+                        sx={{
+                          flexGrow: 1,
+                          bgcolor: "#2E8B57",
+                          borderRadius: 3,
+                          p: 1.2,
+                          minHeight: 48,
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Typography
+                          variant="body2"
+                          color="white"
+                          noWrap
+                          sx={{ fontWeight: 500 }}
+                        >
+                          {n.comment}
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          sx={{ color: "rgba(255,255,255,0.8)", mt: 0.5 }}
+                        >
+                          {n.firstNameUser} {n.lastNameUser} – {n.note}/5
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ))}
+
+                  {randomNotices.length === 0 && (
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      textAlign="center"
+                      sx={{ mt: 2 }}
+                    >
+                      Aucun avis pour le moment.
+                    </Typography>
+                  )}
+                </Box>
+
+                {/* Flèche droite */}
+                <IconButton size="small">
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
+
       {/* Footer */}
-      <Box component="footer" sx={{ bgcolor: "#FDFBF7", py: 6, borderTop: "1px solid #eaeaea" }}>
+      <Box
+        component="footer"
+        sx={{ bgcolor: "#FDFBF7", py: 6, borderTop: "1px solid #eaeaea" }}
+      >
         <Container maxWidth="lg">
           <Stack direction="row" spacing={3} justifyContent="center" mb={5}>
-            <IconButton color="inherit"><FacebookIcon sx={{ fontSize: 30, color: "#333" }} /></IconButton>
-            <IconButton color="inherit"><InstagramIcon sx={{ fontSize: 30, color: "#333" }} /></IconButton>
-            <IconButton color="inherit"><LinkedInIcon sx={{ fontSize: 30, color: "#333" }} /></IconButton>
+            <IconButton color="inherit">
+              <FacebookIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
+            <IconButton color="inherit">
+              <InstagramIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
+            <IconButton color="inherit">
+              <LinkedInIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
           </Stack>
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mb: 5, opacity: 0.8 }}>
-            <Divider sx={{ width: { xs: "30px", md: "100px" }, bgcolor: "#ccc" }} />
-            <Typography variant="body2" color="text.primary" sx={{ mx: 2, textAlign: "center", fontWeight: 500 }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              mb: 5,
+              opacity: 0.8,
+            }}
+          >
+            <Divider
+              sx={{ width: { xs: "30px", md: "100px" }, bgcolor: "#ccc" }}
+            />
+            <Typography
+              variant="body2"
+              color="text.primary"
+              sx={{ mx: 2, textAlign: "center", fontWeight: 500 }}
+            >
               © 2025 BEAUVERT Projet Dev – Tous droits réservés.
             </Typography>
-            <Divider sx={{ width: { xs: "30px", md: "100px" }, bgcolor: "#ccc" }} />
+            <Divider
+              sx={{ width: { xs: "30px", md: "100px" }, bgcolor: "#ccc" }}
+            />
           </Box>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Box
               component="img"
               src={logoCamping}
               alt="Logo Beauvert"
-              sx={{ height: 80, width: 80, borderRadius: "50%", objectFit: "cover", border: "3px solid white", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}
+              sx={{
+                height: 80,
+                width: 80,
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: "3px solid white",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+              }}
             />
           </Box>
         </Container>
