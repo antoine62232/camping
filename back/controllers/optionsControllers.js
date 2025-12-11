@@ -58,10 +58,21 @@ const deleteOption = async (req, res) => {
     }
 }
 
+const getOptionsAccommodations = async (req, res) => {
+    try {
+        const options = await optionsModel.getAllOptions(); 
+        res.json(options);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Erreur options" });
+    }
+};
+
 export default {
     createOption,
     getAllOptions,
     getOptionById,
     updateOption,
-    deleteOption
+    deleteOption,
+    getOptionsAccommodations
 }

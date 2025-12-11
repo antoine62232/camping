@@ -41,10 +41,21 @@ const deleteOption = async (idOption) => {
     return result;
 }
 
+const fetchOptionsByAccommodationId = async (id) => {
+    const sql = `
+        SELECT o.idOption, o.nameOption, o.descriptionOption, o.unitPrice, o.durationType 
+        FROM options o
+        JOIN optionsaccommodations oa ON o.idOption = oa.optionId
+        WHERE oa.accommodationId = ?`;
+    const [result] = await connexion.query(sql, [id]);
+    return result;
+};
+
 export default {
     createOption,
     getAllOptions,
     getOptionById,
     updateOption,
-    deleteOption
+    deleteOption,
+    fetchOptionsByAccommodationId
 }
