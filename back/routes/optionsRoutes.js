@@ -8,5 +8,6 @@ router.get('/', optionsControllers.getAllOptions);
 router.get('/:id', optionsControllers.getOptionById);
 router.put('/update/:id', optionsControllers.updateOption);
 router.delete('/delete/:id', optionsControllers.deleteOption);
+router.get('/accommodations/:id', optionsControllers.getOptionsAccommodations);
 
 export default router;

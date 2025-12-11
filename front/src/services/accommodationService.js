@@ -14,3 +14,6 @@ export const updateAccommodation = (id, data) =>
 
 export const deleteAccommodation = (id) =>
   apiClient.delete(`/accommodations/deleteAccommodation/${id}`);
+
+export const getOptionsByAccommodationId = (id) => 
+    apiClient.get(`/options/accommodations/${id}`);
