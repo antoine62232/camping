@@ -34,12 +34,21 @@ function ReservationPage() {
   const [currentAdults, setCurrentAdults] = useState(adults || 2);
   const [currentChildren, setCurrentChildren] = useState(children || 0);
 
+  
   // Données back
   const [accommodations, setAccommodations] = useState([]);
   const [options, setOptions] = useState([]);
-
+  
   const [selectedOptions, setSelectedOptions] = useState({});
-
+  
+  const selectedAccommodation = useMemo(
+    () =>
+      accommodations.find(
+        (a) => String(a.id) === String(currentAccommodationId)
+      ),
+    [accommodations, currentAccommodationId]
+  );
+  
   // Chargement hébergements + options
   useEffect(() => {
     getAllAccommodations()
@@ -68,7 +77,6 @@ function ReservationPage() {
   }, []);
 
   const safeOptions = Array.isArray(options) ? options : [];
-  console.log("SAFE OPTIONS DANS RENDER ===>", safeOptions);
 
   // Mise à jour quantité d’une option
   const setOptionQuantity = (optId, quantity) => {
@@ -168,7 +176,8 @@ function ReservationPage() {
             Récapitulatif de votre séjour
           </Typography>
           <Typography>
-            Hébergement : {currentAccommodationId || "Tous les hébergements"}
+            Hébergement :{" "}
+            {selectedAccommodation?.title || "Tous les hébergements"}
           </Typography>
           <Typography>Arrivée : {currentStartDate || "-"}</Typography>
           <Typography>Départ : {currentEndDate || "-"}</Typography>

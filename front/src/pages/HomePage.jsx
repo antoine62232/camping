@@ -47,15 +47,16 @@ const Homepage = () => {
         // Mapping des données (SQL -> Front)
         const formattedData = api.map((item) => {
           return {
-          id: item.idAccommodation,
-          title: item.typeAccommodation || "Hébergement",
-          location: item.descriptionAccommodation || "Camping Beauvert",
-          rating: 4.5, // Valeur par défaut
-          reviews: 24, // Valeur par défaut
-          price: item.basePriceAccommodation || 0,
-          // Image par défaut
-          img: "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80",
-        }});
+            id: item.idAccommodation,
+            title: item.typeAccommodation || "Hébergement",
+            location: item.descriptionAccommodation || "Camping Beauvert",
+            rating: 4.5, // Valeur par défaut
+            reviews: 24, // Valeur par défaut
+            price: item.basePriceAccommodation || 0,
+            // Image par défaut
+            img: "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80",
+          };
+        });
 
         setResults(formattedData);
       })
@@ -382,7 +383,16 @@ const Homepage = () => {
                       variant="contained"
                       size="small"
                       sx={{ bgcolor: "#548C5C" }}
-                      onClick={() => navigate(`/reservation`)}
+                      onClick={() =>
+                        navigate("/reservation", {
+                          state: {
+                            accommodationId: item.id,
+                            title: item.title,
+                            description: item.location,
+                            basePriceAccommodation: Number(item.price),
+                          },
+                        })
+                      }
                     >
                       Réserver
                     </Button>
