@@ -9,6 +9,7 @@ import AdminDashboardPage from "./pages/AdminDashboardPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/NavBar";
+import AccommodationPage from "./pages/AccommodationPage.jsx";
 import ConfirmationPage from "./pages/ConfirmationPage.jsx";
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
               element={<ConfirmationPage />}
             />
             <Route path="/actus" element={<ActuPage />} />
+            <Route path="/accommodation/:id" element={<AccommodationPage />} />
           </Routes>
         </Navbar>
       </BrowserRouter>
