@@ -1,7 +1,7 @@
 import connexion from "../config/bdd.js";
 
 const fetchAllAccommodations = async () => {
-    const sql = `SELECT typeAccommodation, descriptionAccommodation, abilityAccommodation, surfaceAccommodation, equipementAccommodation, availableAccommodation, basePriceAccommodation
+    const sql = `SELECT idAccommodation, typeAccommodation, descriptionAccommodation, abilityAccommodation, surfaceAccommodation, equipementAccommodation, availableAccommodation, basePriceAccommodation
     FROM accommodations;`;
     const [result] = await connexion.query(sql);
     return result;

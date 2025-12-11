@@ -1,21 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Typography,
-  Paper,
-  Rating,
-  Divider,
-  Stack,
-  Container,
-  ButtonGroup,
-  Button,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  IconButton,
-} from "@mui/material";
+import { Box, Typography, Paper, Rating, Divider, Stack, Container, ButtonGroup, Button, Grid, Card, CardMedia, CardContent, IconButton, } from "@mui/material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
@@ -28,34 +13,26 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import logoCamping from "../assets/Logo_NavBar.png";
 import ReservationSearchBar from "../components/ReservationSearchBar";
-
-// 2. IMPORT DU SERVICE (Qui utilise Axios)
 import { getAllAccommodations } from "../services/accommodationService";
 
 const Homepage = () => {
   const navigate = useNavigate();
-
   const [results, setResults] = useState([]);
   const [activeFilter, setActiveFilter] = useState("chambres");
 
-  // --- CONNEXION AU BACK-END ---
   useEffect(() => {
     getAllAccommodations()
       .then((response) => {
         const api = response.data;
         console.log("Données reçues via Axios :", api);
 
-        // Mapping des données (SQL -> Front)
         const formattedData = api.map((item) => ({
-          id: item.idAccommodation,
-          
+          id: item.idAccommodation || item.id || item.ID,
           title: item.typeAccommodation || "Hébergement",
-          location: item.descriptionAccommodation || "Camping Beauvert",
-          rating: 4.5, // Valeur par défaut
-          reviews: 24, // Valeur par défaut
+          rating: 4.5,
+          reviews: 24,
           price: item.basePriceAccommodation || 0,
-          // Image par défaut
-          img: "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80",
+          img: "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80"
         }));
 
         setResults(formattedData);
@@ -312,7 +289,7 @@ const Homepage = () => {
         <Grid container spacing={4} justifyContent="center">
           {results.map((item) => (
             <Grid item xs={12} sm={6} md={4} key={item.id}>
-              <Card
+              <Card onClick={() => navigate(`/accommodation/${item.id}`)}
                 sx={{
                   borderRadius: 3,
                   height: "100%",
@@ -321,6 +298,7 @@ const Homepage = () => {
                   boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
                   transition: "0.3s ease",
                   "&:hover": {
+                    cursor: "pointer",
                     transform: "translateY(-5px)",
                     boxShadow: "0 12px 24px rgba(0,0,0,0.2)",
                   },
@@ -382,7 +360,7 @@ const Homepage = () => {
                       variant="contained"
                       size="small"
                       sx={{ bgcolor: "#548C5C" }}
-                      onClick={() => navigate(`/reservation/${item.id}`)}
+                      onClick={() => navigate(`/accommodation/${item.id}`)}
                     >
                       Réserver
                     </Button>
