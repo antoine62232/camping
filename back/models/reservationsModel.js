@@ -10,7 +10,7 @@ const createReservation = async (arrivalDateReservation, departureDateReservatio
 }
 
 const getAllReservations = async () => {
-    const selectAllReservations = `SELECT dateReservation, arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId FROM reservations`;
+    const selectAllReservations = `SELECT idReservation, dateReservation, arrivalDateReservation, departureDateReservation, numberAdult, numberChildren, priceHtReservation, tvaReservation, priceTotal, statusReservation, userId, accommodationId FROM reservations`;
     const [result] = await connexion.query(selectAllReservations);
     return result;
 }

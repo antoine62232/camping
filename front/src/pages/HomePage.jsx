@@ -16,10 +16,15 @@ import {
   CardContent,
   IconButton,
   CircularProgress,
+  Avatar,
+  TextField,
 } from "@mui/material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import bgVector from "../assets/Topographic 1.svg";
 
 // Icônes
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -36,6 +41,12 @@ import ReservationSearchBar from "../components/ReservationSearchBar";
 
 // Service
 import { getAllAccommodations } from "../services/accommodationService";
+import {
+  getAllNotices,
+  createNotice,
+  updateNotice,
+  deleteNotice,
+} from "../services/noticesService";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -43,13 +54,20 @@ const Homepage = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true); // Ajout d'un état de chargement
   const [activeFilter, setActiveFilter] = useState("chambres");
+  const [notices, setNotices] = useState([]);
+  const [randomNotices, setRandomNotices] = useState([]);
+  const [myNotice, setMyNotice] = useState(null);
+  const [commentInput, setCommentInput] = useState("");
+  const [noteInput, setNoteInput] = useState(5);
+  const [user, setUser] = useState(null);
+
+  const getClientId = (u) => u?.idUser ?? u?.id ?? null;
 
   // --- CONNEXION AU BACK-END ---
   useEffect(() => {
     getAllAccommodations()
       .then((response) => {
         const rawData = response.data;
-        console.log("Données reçues du Back :", rawData);
 
         // Mapping SQL -> React
         const formattedData = rawData.map((item) => ({
@@ -72,6 +90,103 @@ const Homepage = () => {
         setLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    const raw = localStorage.getItem("client");
+
+    if (raw) {
+      try {
+        setUser(JSON.parse(raw));
+      } catch (e) {
+        console.error("Client parse error", e);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    getAllNotices()
+      .then((res) => {
+        const all = Array.isArray(res.data) ? res.data : res.data.notices || [];
+        setNotices(all);
+
+        const shuffled = [...all].sort(() => Math.random() - 0.5);
+        setRandomNotices(shuffled.slice(0, 3));
+
+        const clientId = getClientId(user);
+        if (clientId) {
+          const mine = all.find((n) => Number(n.userId) === Number(clientId));
+          if (mine) {
+            setMyNotice(mine);
+            setCommentInput(mine.comment || "");
+            setNoteInput(mine.note || 5);
+          } else {
+            setMyNotice(null);
+            setCommentInput("");
+            setNoteInput(5);
+          }
+        }
+      })
+      .catch((err) => console.error("Erreur notices", err));
+  }, [user]);
+
+  const handleSaveNotice = async () => {
+    const clientId = getClientId(user);
+
+    if (!clientId) {
+      alert("Pas d'id user, impossible d'enregistrer l'avis.");
+      return;
+    }
+
+    try {
+      if (myNotice) {
+        await updateNotice(myNotice.idNotice, {
+          note: noteInput,
+          comment: commentInput,
+        });
+      } else {
+        await createNotice({
+          userId: clientId,
+          note: noteInput,
+          comment: commentInput,
+        });
+      }
+
+      const res = await getAllNotices();
+      const all = Array.isArray(res.data) ? res.data : res.data.notices || [];
+      setNotices(all);
+      const shuffled = [...all].sort(() => Math.random() - 0.5);
+      setRandomNotices(shuffled.slice(0, 3));
+
+      const mine = all.find((n) => Number(n.userId) === Number(clientId));
+      console.log("MINE AFTER SAVE ===>", mine);
+      setMyNotice(mine || null);
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de l'enregistrement de l'avis.");
+    }
+  };
+
+  const handleDeleteNotice = async () => {
+    if (!myNotice) return;
+    const ok = window.confirm("Supprimer votre avis ?");
+    if (!ok) return;
+
+    try {
+      await deleteNotice(myNotice.idNotice);
+      setMyNotice(null);
+      setCommentInput("");
+      setNoteInput(5);
+
+      const res = await getAllNotices();
+      const all = Array.isArray(res.data) ? res.data : res.data.notices || [];
+      setNotices(all);
+      const shuffled = [...all].sort(() => Math.random() - 0.5);
+      setRandomNotices(shuffled.slice(0, 3));
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de la suppression de l'avis.");
+    }
+  };
 
   // --- Fonctions de tri ---
   const sortingByBedroom = () => setActiveFilter("chambres");
@@ -96,9 +211,17 @@ const Homepage = () => {
     autoplaySpeed: 3000,
   };
 
-  console.log("HOME results pour SearchBar", results);
   return (
-    <Box sx={{ bgcolor: "#f9f9f9" }}>
+    <Box
+      sx={{
+        bgcolor: "#f9f9f9",
+        minHeight: "100vh",
+        backgroundImage: `url(${bgVector})`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "contain",
+        backgroundPosition: "top center",
+      }}
+    >
       {/* Header Hero */}
       <Box
         sx={{
@@ -142,7 +265,12 @@ const Homepage = () => {
           Bienvenue au camping Beauvert !
         </Typography>
         <Box
-          sx={{ position: "relative", zIndex: 1, width: "90%", maxWidth: 900 }}
+          sx={{
+            position: "relative",
+            zIndex: 1,
+            width: "90%",
+            maxWidth: 900,
+          }}
         >
           <ReservationSearchBar
             accommodations={results}
@@ -210,7 +338,11 @@ const Homepage = () => {
                         {slide.location}
                       </Typography>
                       <Box
-                        sx={{ display: "flex", alignItems: "center", mt: 1 }}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          mt: 1,
+                        }}
                       >
                         <Rating
                           value={Number(slide.rating)}
@@ -236,7 +368,11 @@ const Homepage = () => {
                         }}
                       >
                         <Box
-                          sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                          }}
                         >
                           <Typography variant="body1">
                             Dates disponibles
@@ -248,7 +384,12 @@ const Homepage = () => {
                         </Typography>
                       </Box>
                       <Divider
-                        sx={{ bgcolor: "white", mt: 1, mb: 2, opacity: 0.6 }}
+                        sx={{
+                          bgcolor: "white",
+                          mt: 1,
+                          mb: 2,
+                          opacity: 0.6,
+                        }}
                       />
                       <Stack direction="row" spacing={3}>
                         <BedIcon />
@@ -291,7 +432,10 @@ const Homepage = () => {
             onClick={sortingByBedroom}
             sx={
               activeFilter === "chambres"
-                ? { bgcolor: "#2E8B57 !important", color: "white !important" }
+                ? {
+                    bgcolor: "#2E8B57 !important",
+                    color: "white !important",
+                  }
                 : {}
             }
           >
@@ -301,7 +445,10 @@ const Homepage = () => {
             onClick={sortingByPrice}
             sx={
               activeFilter === "prix"
-                ? { bgcolor: "#2E8B57 !important", color: "white !important" }
+                ? {
+                    bgcolor: "#2E8B57 !important",
+                    color: "white !important",
+                  }
                 : {}
             }
           >
@@ -311,7 +458,10 @@ const Homepage = () => {
             onClick={sortingByRating}
             sx={
               activeFilter === "avis"
-                ? { bgcolor: "#2E8B57 !important", color: "white !important" }
+                ? {
+                    bgcolor: "#2E8B57 !important",
+                    color: "white !important",
+                  }
                 : {}
             }
           >
@@ -418,6 +568,222 @@ const Homepage = () => {
           ))}
         </Grid>
       </Container>
+
+      <Container sx={{ mb: 8, justifyItems: "center" }}>
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          textAlign="center"
+          textTransform="uppercase"
+          gutterBottom
+        >
+          Leur avis comptent pour nous
+        </Typography>
+
+        <Grid container spacing={4} alignItems="stretch">
+          {/* Image à gauche */}
+          <Grid item xs={12} md={6}>
+            <Paper
+              sx={{
+                height: 360,
+                width: 340,
+                borderRadius: 3,
+                overflow: "hidden",
+              }}
+              elevation={0}
+            >
+              <Box
+                component="img"
+                src="https://images.pexels.com/photos/12099298/pexels-photo-12099298.jpeg?auto=compress&cs=tinysrgb&w=800"
+                alt="Client satisfait"
+                sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            </Paper>
+          </Grid>
+
+          {/* Avis à droite */}
+          <Grid item xs={12} md={6}>
+            <Paper
+              sx={{
+                height: 360,
+                borderRadius: 3,
+                p: 2.5,
+                display: "flex",
+                flexDirection: "column",
+                bgcolor: "#FBE9DD",
+              }}
+              elevation={0}
+            >
+              <Typography
+                variant="subtitle1"
+                fontWeight="bold"
+                textAlign="center"
+                gutterBottom
+              >
+                Leur avis
+              </Typography>
+
+              <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+                {/* Flèche gauche */}
+                <IconButton size="small">
+                  <ArrowBackIosNewIcon fontSize="small" />
+                </IconButton>
+
+                {/* Colonne avis */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    flexGrow: 1,
+                    gap: 1.5,
+                    px: 1,
+                  }}
+                >
+                  {randomNotices.map((n) => (
+                    <Box
+                      key={n.idNotice}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1.5,
+                      }}
+                    >
+                      <Avatar sx={{ width: 48, height: 48 }} src={undefined}>
+                        {n.firstNameUser?.[0]}
+                        {n.lastNameUser?.[0]}
+                      </Avatar>
+
+                      <Box
+                        sx={{
+                          flexGrow: 1,
+                          bgcolor: "#2E8B57",
+                          borderRadius: 3,
+                          p: 1.2,
+                          minHeight: 48,
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            mb: 0.5,
+                          }}
+                        >
+                          <Rating
+                            value={Number(n.note) || 0}
+                            precision={0.5}
+                            readOnly
+                            size="small"
+                            sx={{ color: "#FFD700", mr: 1 }}
+                          />
+                          <Typography
+                            variant="caption"
+                            sx={{ color: "rgba(255,255,255,0.8)" }}
+                          >
+                            {n.note}/5
+                          </Typography>
+                        </Box>
+
+                        <Typography
+                          variant="body2"
+                          color="white"
+                          noWrap
+                          sx={{ fontWeight: 500 }}
+                        >
+                          {n.comment}
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          sx={{ color: "rgba(255,255,255,0.8)", mt: 0.5 }}
+                        >
+                          {n.firstNameUser} {n.lastNameUser}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ))}
+
+                  {randomNotices.length === 0 && (
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      textAlign="center"
+                      sx={{ mt: 2 }}
+                    >
+                      Aucun avis pour le moment.
+                    </Typography>
+                  )}
+                </Box>
+
+                {/* Flèche droite */}
+                <IconButton size="small">
+                  <ArrowForwardIosIcon fontSize="small" />
+                </IconButton>
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
+
+      <Box sx={{ mt: 4, maxWidth: 600, mx: "auto" }}>
+        <Typography variant="h6" gutterBottom textAlign="center">
+          Laisser un avis sur le camping
+        </Typography>
+
+        {!user && (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            textAlign="center"
+            sx={{ mb: 2 }}
+          >
+            Connectez-vous pour écrire, modifier ou supprimer votre avis.
+          </Typography>
+        )}
+
+        {user && (
+          <>
+            <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+              <Rating
+                value={Number(noteInput)}
+                onChange={(_, newValue) => setNoteInput(newValue || 0)}
+              />
+            </Box>
+
+            <TextField
+              label="Votre avis"
+              multiline
+              minRows={3}
+              fullWidth
+              value={commentInput}
+              onChange={(e) => setCommentInput(e.target.value)}
+              sx={{ mb: 2 }}
+            />
+
+            <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSaveNotice}
+              >
+                {myNotice ? "Mettre à jour mon avis" : "Publier mon avis"}
+              </Button>
+
+              {myNotice && (
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleDeleteNotice}
+                >
+                  Supprimer mon avis
+                </Button>
+              )}
+            </Box>
+          </>
+        )}
+      </Box>
 
       {/* Footer */}
       <Box

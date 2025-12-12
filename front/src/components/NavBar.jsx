@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Drawer,
@@ -18,7 +18,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import logo from "../assets/Logo_NavBar.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Largeur du menu latéral (Drawer)
 const drawerWidth = 230.33;
@@ -39,6 +39,26 @@ const menuItems = [
 
 export default function Navbar({ children }) {
   const [open, setOpen] = useState(false); // Fermé par défaut
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const raw = localStorage.getItem("client");
+    if (raw) {
+      try {
+        setUser(JSON.parse(raw));
+      } catch (e) {
+        console.error("Client parse error", e);
+      }
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("client");
+    localStorage.removeItem("clientToken");
+    setUser(null);
+    navigate("/");
+  };
 
   const handleDrawerOpen = () => setOpen(true);
   const handleDrawerClose = () => setOpen(false);
@@ -111,29 +131,88 @@ export default function Navbar({ children }) {
 
       {/* Bouton "Mon Compte" en bas */}
       <List sx={{ width: "100%", mt: "70px", mb: "70px" }}>
-        <ListItem disablePadding sx={{ justifyContent: "center" }}>
-          <ListItemButton
-            component={Link}
-            to="/auth"
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center",
-            }}
-          >
-            <ListItemIcon sx={{ color: "black", minWidth: 0 }}>
-              <PersonOutlineOutlinedIcon sx={{ width: 30, height: 30 }} />
-            </ListItemIcon>
-            <ListItemText
-              primary="Mon Compte"
-              primaryTypographyProps={{
-                fontSize: "22px",
-                fontWeight: "medium",
+        {!user ? (
+          // Pas connecté : lien vers /auth
+          <ListItem disablePadding sx={{ justifyContent: "center" }}>
+            <ListItemButton
+              component={Link}
+              to="/auth"
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                textAlign: "center",
               }}
-            />
-          </ListItemButton>
-        </ListItem>
+            >
+              <ListItemIcon sx={{ color: "black", minWidth: 0 }}>
+                <PersonOutlineOutlinedIcon sx={{ width: 30, height: 30 }} />
+              </ListItemIcon>
+              <ListItemText
+                primary="Mon Compte"
+                primaryTypographyProps={{
+                  fontSize: "22px",
+                  fontWeight: "medium",
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
+        ) : (
+          // Connecté : avatar + profil + déconnexion
+          <>
+            <ListItem disablePadding sx={{ justifyContent: "center", mb: 1 }}>
+              <ListItemButton
+                component={Link}
+                to="/profil"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  textAlign: "center",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: "50%",
+                    bgcolor: "#2E8B57",
+                    color: "white",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    mb: 1,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {user.firstName?.[0]}
+                  {user.lastName?.[0]}
+                </Box>
+                <ListItemText
+                  primary={`${user.firstName} ${user.lastName}`}
+                  secondary="Voir le profil"
+                  primaryTypographyProps={{
+                    fontSize: "18px",
+                    fontWeight: "medium",
+                  }}
+                  secondaryTypographyProps={{
+                    fontSize: "14px",
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem disablePadding sx={{ justifyContent: "center" }}>
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={handleLogout}
+                sx={{ borderRadius: 999, px: 3, textTransform: "none" }}
+              >
+                Déconnexion
+              </Button>
+            </ListItem>
+          </>
+        )}
       </List>
 
       {/* ESPACE LOGO */}

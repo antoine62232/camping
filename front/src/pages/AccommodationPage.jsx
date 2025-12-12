@@ -17,6 +17,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Tooltip,
 } from "@mui/material";
 
 // Icônes
@@ -29,6 +30,14 @@ import AcUnitIcon from "@mui/icons-material/AcUnit";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import CleaningServicesIcon from "@mui/icons-material/CleaningServices";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import WifiIcon from "@mui/icons-material/Wifi";
+import LocalCafeIcon from "@mui/icons-material/LocalCafe";
+import BedIcon from "@mui/icons-material/Bed";
+import WbIncandescentIcon from '@mui/icons-material/WbIncandescent';
+import TvIcon from '@mui/icons-material/Tv';
+import CookieIcon from '@mui/icons-material/Cookie';
+import BathroomIcon from '@mui/icons-material/Bathroom';
+import bgVector from "../assets/Topographic 3.svg"
 
 // Service
 import {
@@ -67,7 +76,7 @@ const AccommodationPage = () => {
           surface: accomData.surfaceAccommodation || 0,
           capacity: accomData.abilityAccommodation || 2,
           equipments: accomData.equipementAccommodation
-            ? accomData.equipementAccommodation.split(",")
+            ? accomData.equipementAccommodation.split(";")
             : [],
           img:
             accomData.imageAccommodation ||
@@ -136,7 +145,10 @@ const AccommodationPage = () => {
   }, {});
 
   return (
-    <Box sx={{ bgcolor: "background.default", minHeight: "100vh", py: 6 }}>
+    <Box sx={{ bgcolor: "background.default", minHeight: "100vh", py: 6, backgroundImage: `url(${bgVector})`,
+            backgroundRepeat: "repeat",
+            backgroundSize: "contain",
+            backgroundPosition: "top center", }}>
       <Container maxWidth="lg">
         <Button
           startIcon={<ArrowBackIcon />}
@@ -217,20 +229,59 @@ const AccommodationPage = () => {
                 gutterBottom
                 sx={{ fontSize: "18px", fontWeight: "bold" }}
               >
-                Inclus :
+                Services inclus
               </Typography>
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 3 }}>
-                {accommodation.equipments.map((eq, index) => (
-                  <Chip
-                    key={index}
-                    label={eq.trim()}
-                    size="small"
-                    sx={{
-                      bgcolor: theme.palette.section.main,
-                      color: theme.palette.primary.main,
-                    }}
-                  />
-                ))}
+
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  mb: 3,
+                  flexWrap: "wrap",
+                }}
+              >
+                {accommodation.equipments.map((eq, index) => {
+                  const label = eq.trim().toLowerCase();
+
+                  let Icon = BedIcon;
+
+                  if (label.includes("wifi")) Icon = WifiIcon;
+                  else if (label.includes("clim")) Icon = AcUnitIcon;
+                  else if (label.includes("cuisine")) Icon = CookieIcon;
+                  else if (label.includes("tv"))
+                    Icon = TvIcon; 
+                  else if (label.includes("terrasse"))
+                    Icon = LocalCafeIcon; 
+                  else if (label.includes("lits") || label.includes("lit"))
+                    Icon = BedIcon;
+                  else if (label.includes("électricité"))
+                    Icon =
+                      WbIncandescentIcon;
+                  else if (
+                    label.includes("lave-vaisselle") ||
+                    label.includes("lave vaisselle")
+                  )
+                    Icon = BathroomIcon;
+
+                  return (
+                    <Tooltip key={index} title={eq.trim()} arrow>
+                      <Box
+                        sx={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: "50%",
+                          bgcolor: "section.main",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          cursor: "default",
+                        }}
+                      >
+                        <Icon color="primary" fontSize="small" />
+                      </Box>
+                    </Tooltip>
+                  );
+                })}
               </Box>
 
               <Divider sx={{ my: 3 }} />

@@ -17,6 +17,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import ReservationSearchBar from "../components/ReservationSearchBar";
 import { getAllAccommodations } from "../services/accommodationService";
 import { getAllOptions } from "../services/optionsService";
+import bgVector from "../assets/Topographic 3.svg"
 
 function ReservationPage() {
   const location = useLocation();
@@ -164,7 +165,10 @@ function ReservationPage() {
   };
 
   return (
-    <Box sx={{ bgcolor: "background.default", py: 4 }}>
+    <Box sx={{ bgcolor: "background.default", py: 4, minHeight: "100vh", backgroundImage: `url(${bgVector})`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "contain",
+        backgroundPosition: "top center", }}>
       <Container maxWidth="md">
         <Typography variant="h4" fontWeight="bold" gutterBottom>
           Réservation

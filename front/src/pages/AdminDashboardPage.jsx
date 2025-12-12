@@ -6,6 +6,7 @@ import GestionReservations from "../components/GestionReservations";
 import KPI from "../components/KPI";
 import PlanningRH from "../components/PlanningRH";
 import RapportsFinanciers from "../components/RapportsFinanciers";
+import bgVector from "../assets/Topographic 1.svg"
 
 function AdminDashboardPage() {
   const { employee, logout } = useEmployeeAuth();
@@ -19,7 +20,10 @@ function AdminDashboardPage() {
   };
 
   return (
-    <Box sx={{ minHeight: "100vh", bgcolor: "background.default", py: 4 }}>
+    <Box sx={{ minHeight: "100vh", bgcolor: "background.default", py: 4, backgroundImage: `url(${bgVector})`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "contain",
+        backgroundPosition: "top center", }}>
       <Container maxWidth="lg">
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
           <Typography variant="h4">

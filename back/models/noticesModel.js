@@ -11,7 +11,7 @@ const createNotice = async (userId, note, comment) => {
 
 const getAllNotices = async () => {
     const sql = `
-        SELECT notices.idNotice, notices.note, notices.comment, notices.dateNotice, users.firstNameUser, users.lastNameUser FROM notices
+        SELECT notices.idNotice, notices.userId, notices.note, notices.comment, notices.dateNotice, users.firstNameUser, users.lastNameUser FROM notices
         INNER JOIN users on notices.userId = users.idUser
         ORDER BY notices.dateNotice DESC;  
     `;
@@ -22,7 +22,7 @@ const getAllNotices = async () => {
 
 const getNoticeById = async (idNotice) => {
     const sql = `
-        SELECT notices.idNotice, notices.note, notices.comment, notices.dateNotice, users.firstNameUser, users.lastNameUser FROM notices
+        SELECT notices.idNotice, notices.userId, notices.note, notices.comment, notices.dateNotice, users.firstNameUser, users.lastNameUser FROM notices
         INNER JOIN users on notices.userId = users.idUser
         WHERE notices.idNotice = ?;
     `;
