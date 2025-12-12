@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/NavBar";
 import AccommodationPage from "./pages/AccommodationPage.jsx";
 import ConfirmationPage from "./pages/ConfirmationPage.jsx";
+import GalleryPage from "./pages/GalleryPage";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
               element={<ConfirmationPage />}
             />
             <Route path="/actus" element={<ActuPage />} />
+            <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/accommodation/:id" element={<AccommodationPage />} />
           </Routes>
         </Navbar>
