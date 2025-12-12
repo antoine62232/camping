@@ -17,3 +17,6 @@ export const deleteReservation = (id) =>
 
 export const cancelAndRefundReservation = (idReservation) =>
   apiClient.post(`/reservations/${idReservation}/cancel-and-refund`);
+
+export const getReservationsByUser = (userId) =>
+  apiClient.get(`/reservations/user/${userId}`);

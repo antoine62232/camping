@@ -107,8 +107,6 @@ const Homepage = () => {
     getAllNotices()
       .then((res) => {
         const all = Array.isArray(res.data) ? res.data : res.data.notices || [];
-        console.log("ALL NOTICES ===>", all);
-        console.log("ONE NOTICE EXAMPLE ===>", all[0]);
         setNotices(all);
 
         const shuffled = [...all].sort(() => Math.random() - 0.5);

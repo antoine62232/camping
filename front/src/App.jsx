@@ -12,6 +12,7 @@ import Navbar from "./components/NavBar";
 import AccommodationPage from "./pages/AccommodationPage.jsx";
 import Contact from "./pages/Contact.jsx";
 import ConfirmationPage from "./pages/ConfirmationPage.jsx";
+import ProfilePage from "./pages/ProfilPage.jsx"
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             <Route path="/actus" element={<ActuPage />} />
             <Route path="/accommodation/:id" element={<AccommodationPage />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/profil" element={<ProfilePage />} />
           </Routes>
         </Navbar>
       </BrowserRouter>
