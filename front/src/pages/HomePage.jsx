@@ -1,30 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Typography,
-  Paper,
-  Rating,
-  Divider,
-  Stack,
-  Container,
-  ButtonGroup,
-  Button,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  IconButton,
-  CircularProgress,
-  Avatar,
-} from "@mui/material";
+import { Box, Typography, Paper, Rating, Divider, Stack, Container, ButtonGroup, Button, Grid, Card, CardMedia, CardContent, IconButton, CircularProgress, Avatar } from "@mui/material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-
-// Icônes
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import WifiIcon from "@mui/icons-material/Wifi";
 import BedIcon from "@mui/icons-material/Bed";
@@ -32,12 +13,8 @@ import LocalCafeIcon from "@mui/icons-material/LocalCafe";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-
-// Assets
 import logoCamping from "../assets/Logo_NavBar.png";
 import ReservationSearchBar from "../components/ReservationSearchBar";
-
-// Service
 import { getAllAccommodations } from "../services/accommodationService";
 import { getAllNotices } from "../services/noticesService";
 
@@ -45,7 +22,7 @@ const Homepage = () => {
   const navigate = useNavigate();
 
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true); // Ajout d'un état de chargement
+  const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState("chambres");
   const [notices, setNotices] = useState([]);
   const [randomNotices, setRandomNotices] = useState([]);
@@ -55,9 +32,6 @@ const Homepage = () => {
     getAllAccommodations()
       .then((response) => {
         const rawData = response.data;
-        console.log("Données reçues du Back :", rawData);
-
-        // Mapping SQL -> React
         const formattedData = rawData.map((item) => ({
           id: item.idAccommodation,
           title: item.typeAccommodation || "Hébergement",

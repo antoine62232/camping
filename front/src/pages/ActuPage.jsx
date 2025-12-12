@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Button, Container, Grid, Stack, IconButton, Divider } from '@mui/material';
+import { Box, Typography, Button, Container, Grid, Stack, IconButton, Divider, Card, CardContent, CardMedia } from '@mui/material';
 import '../App.css';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -14,6 +14,29 @@ import animationsData from '../animations.json';
 import actusData from '../actus.json';
 
 export default function ActuPage() {
+
+  // --- DONNÉES CORRIGÉES POUR BIARRITZ ---
+  const touristSpots = [
+    {
+      id: 1,
+      title: "Le Rocher de la Vierge",
+      desc: "L'emblème de Biarritz. Profitez d'une balade incontournable avec une vue imprenable sur toute la baie.",
+      image: "https://www.guides-france.com/wp-content/uploads/2023/05/Visiter-le-Rocher-de-la-Vierge-Biarritz.jpg"
+    },
+    {
+      id: 2,
+      title: "Surf à la Côte des Basques",
+      desc: "Berceau du surf en Europe, cette plage mythique est idéale pour s'initier ou admirer les surfeurs au coucher du soleil.",
+      image: "https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=800&q=80"
+    },
+    {
+      id: 3,
+      title: "Saint-Jean-de-Luz",
+      desc: "À seulement 20 min du camping, découvrez ce port de pêche authentique et sa baie calme idéale pour les familles.",
+      image: "https://www.saint-jean-de-luz.com/wp-content/uploads/external/ac9be0ceeebff445b446aa5bbb8fd514-dsc03210-1600x700.jpg"
+    }
+  ];
+
   return (
     <Box sx={{ width: '100%', minHeight: '100vh', bgcolor: '#fff', pb: 8, m: 0, p: 0 }}>
       
@@ -81,11 +104,9 @@ export default function ActuPage() {
         </Box>
 
         {/* 4. SECTION ACTU ET BLOG */}
-        {/* Box englobante pour centrer le bloc*/}
         <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
           <Box sx={{ 
             p: 4,
-            
             borderRadius: '20px', 
             border: '1px solid #D3D3D3',
             boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
@@ -112,7 +133,38 @@ export default function ActuPage() {
           </Box>
         </Box>
 
+        {/* activités */}
+        <Box sx={{ mt: 10, mb: 8, px: 2 }}>
+            <Typography variant="h4" sx={{ textAlign: 'center', mb: 6, fontWeight: 'bold', fontFamily: 'Montserrat, sans-serif', fontSize: '28px', color: '#333' }}>
+                À DÉCOUVRIR AUTOUR DE BIARRITZ
+            </Typography>
+            
+            <Grid container spacing={4} justifyContent="center">
+                {touristSpots.map((spot) => (
+                    <Grid item xs={12} sm={6} md={4} key={spot.id}>
+                        <Card sx={{ height: '100%', borderRadius: 4, boxShadow: '0 4px 12px rgba(0,0,0,0.1)', transition: 'transform 0.3s', '&:hover': { transform: 'translateY(-5px)' } }}>
+                            <CardMedia
+                                component="img"
+                                height="300"
+                                image={spot.image}
+                                alt={spot.title}
+                            />
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div" sx={{ fontWeight: 'bold', color: '#2E8857' }}>
+                                    {spot.title}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {spot.desc}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
+        </Box>
+
       </Container>
+
       {/* Footer */}
       <Box
         component="footer"

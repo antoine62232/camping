@@ -1,11 +1,15 @@
 import { useState } from "react";
-import { Box, Container, Typography, Grid, TextField, Button, Paper, Stack, useTheme, Divider,Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import { Box, Container, Typography, Grid, TextField, Button, Paper, Stack, useTheme, Divider, Accordion, AccordionSummary, AccordionDetails, IconButton } from "@mui/material";
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import SendIcon from '@mui/icons-material/Send';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'; // Icône pour la FAQ
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import logoCamping from "../assets/Logo_NavBar.png";
 
 const Contact = () => {
     const theme = useTheme();
@@ -48,23 +52,20 @@ const Contact = () => {
     ];
 
     return (
-        <Box sx={{ bgcolor: "background.default", minHeight: "100vh", pb: 8, pt: 12 }}>
+         <Box sx={{ width: '100%', minHeight: '100vh', bgcolor: '#fff', pb: 8, m: 0, p: 0 }}>
 
-            {/* --- HEADER HERO --- */}
+            {/* header */}
             <Box sx={{
-                height: '40vh',
-                width: '100%',
-                backgroundImage: 'url("https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&w=1600&q=80")',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'relative',
-                mb: 6,
-                borderRadius: { xs: 0, md: 4 },
-                mx: { xs: 0, md: 2 },
-                width: { xs: '100%', md: 'auto' }
+                height: '400px',
+                    width: '100%',
+                    backgroundImage: 'url("https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?auto=format&fit=crop&w=1600&q=80")',
+                    backgroundPosition: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                    mb: 4
             }}>
                 <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, bgcolor: 'rgba(0,0,0,0.4)', borderRadius: { xs: 0, md: 4 } }} />
                 <Typography variant="h2" color="white" sx={{ position: 'relative', zIndex: 1, textTransform: 'uppercase', fontWeight: 'bold', textAlign: 'center', px: 2 }}>
@@ -72,10 +73,10 @@ const Contact = () => {
                 </Typography>
             </Box>
 
-            <Container maxWidth="lg">
+            <Container maxWidth="lg" sx={{ pb: 8 }}>
                 <Grid container spacing={4} alignItems="flex-start">
 
-                    {/* coordonnées */}
+                    {/* Coordonnées */}
                     <Grid size={{ xs: 12, md: 4 }}>
                         <Paper elevation={0} sx={{ p: 4, borderRadius: 4, bgcolor: theme.palette.section.main, height: '100%' }}>
                             <Typography variant="h5" color="primary.main" gutterBottom fontWeight="bold" mb={3}>
@@ -188,10 +189,38 @@ const Contact = () => {
                                 </AccordionDetails>
                             </Accordion>
                         ))}
-                    </Box>
+                    </Box>  
                 </Box>
+            </Container> 
 
-            </Container>
+            {/* Footer */}
+            <Box
+                component="footer"
+                sx={{ bgcolor: "#FDFBF7", py: 6, borderTop: "1px solid #eaeaea" }}
+            >
+                <Container maxWidth="lg">
+                    <Stack direction="row" spacing={3} justifyContent="center" mb={5}>
+                        <IconButton ><FacebookIcon sx={{ fontSize: 30, color: "#333" }} /></IconButton>
+                        <IconButton color="inherit"><InstagramIcon sx={{ fontSize: 30, color: "#333" }} /></IconButton>
+                        <IconButton color="inherit"><LinkedInIcon sx={{ fontSize: 30, color: "#333" }} /></IconButton>
+                    </Stack>
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mb: 5, opacity: 0.8 }}>
+                        <Divider sx={{ width: { xs: "30px", md: "100px" }, bgcolor: "#ccc" }} />
+                        <Typography variant="body2" color="text.primary" sx={{ mx: 2, textAlign: "center", fontWeight: 500 }}>
+                            © 2025 BEAUVERT Projet Dev – Tous droits réservés.
+                        </Typography>
+                        <Divider sx={{ width: { xs: "30px", md: "100px" }, bgcolor: "#ccc" }} />
+                    </Box>
+                    <Box sx={{ display: "flex", justifyContent: "center" }}>
+                        <Box
+                            component="img"
+                            src={logoCamping}
+                            alt="Logo Beauvert"
+                            sx={{ height: 80, width: 80, borderRadius: "50%", objectFit: "cover", border: "3px solid white", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}
+                        />
+                    </Box>
+                </Container>
+            </Box>
         </Box>
     );
 };
