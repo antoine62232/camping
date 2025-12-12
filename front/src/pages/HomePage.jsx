@@ -17,6 +17,7 @@ import {
   IconButton,
   CircularProgress,
   Avatar,
+  TextField,
 } from "@mui/material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -40,7 +41,12 @@ import ReservationSearchBar from "../components/ReservationSearchBar";
 
 // Service
 import { getAllAccommodations } from "../services/accommodationService";
-import { getAllNotices } from "../services/noticesService";
+import {
+  getAllNotices,
+  createNotice,
+  updateNotice,
+  deleteNotice,
+} from "../services/noticesService";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -50,13 +56,18 @@ const Homepage = () => {
   const [activeFilter, setActiveFilter] = useState("chambres");
   const [notices, setNotices] = useState([]);
   const [randomNotices, setRandomNotices] = useState([]);
+  const [myNotice, setMyNotice] = useState(null);
+  const [commentInput, setCommentInput] = useState("");
+  const [noteInput, setNoteInput] = useState(5);
+  const [user, setUser] = useState(null);
+
+  const getClientId = (u) => u?.idUser ?? u?.id ?? null;
 
   // --- CONNEXION AU BACK-END ---
   useEffect(() => {
     getAllAccommodations()
       .then((response) => {
         const rawData = response.data;
-        console.log("Données reçues du Back :", rawData);
 
         // Mapping SQL -> React
         const formattedData = rawData.map((item) => ({
@@ -81,31 +92,103 @@ const Homepage = () => {
   }, []);
 
   useEffect(() => {
+    const raw = localStorage.getItem("client");
+
+    if (raw) {
+      try {
+        setUser(JSON.parse(raw));
+      } catch (e) {
+        console.error("Client parse error", e);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     getAllNotices()
       .then((res) => {
-        console.log("NOTICES API ===>", res.data);
-
-        let all = res.data;
-
-        // Sécurisation : on force un tableau
-        if (!Array.isArray(all)) {
-          all = all?.notices || all?.data || [];
-        }
-
+        const all = Array.isArray(res.data) ? res.data : res.data.notices || [];
+        console.log("ALL NOTICES ===>", all);
+        console.log("ONE NOTICE EXAMPLE ===>", all[0]);
         setNotices(all);
 
-        if (all.length > 0) {
-          const shuffled = [...all].sort(() => Math.random() - 0.5);
-          setRandomNotices(shuffled.slice(0, 3));
-        } else {
-          setRandomNotices([]);
+        const shuffled = [...all].sort(() => Math.random() - 0.5);
+        setRandomNotices(shuffled.slice(0, 3));
+
+        const clientId = getClientId(user);
+        if (clientId) {
+          const mine = all.find((n) => Number(n.userId) === Number(clientId));
+          if (mine) {
+            setMyNotice(mine);
+            setCommentInput(mine.comment || "");
+            setNoteInput(mine.note || 5);
+          } else {
+            setMyNotice(null);
+            setCommentInput("");
+            setNoteInput(5);
+          }
         }
       })
-      .catch((err) => {
-        console.error("Erreur notices", err);
-        setRandomNotices([]);
-      });
-  }, []);
+      .catch((err) => console.error("Erreur notices", err));
+  }, [user]);
+
+  const handleSaveNotice = async () => {
+    const clientId = getClientId(user);
+
+    if (!clientId) {
+      alert("Pas d'id user, impossible d'enregistrer l'avis.");
+      return;
+    }
+
+    try {
+      if (myNotice) {
+        await updateNotice(myNotice.idNotice, {
+          note: noteInput,
+          comment: commentInput,
+        });
+      } else {
+        await createNotice({
+          userId: clientId,
+          note: noteInput,
+          comment: commentInput,
+        });
+      }
+
+      const res = await getAllNotices();
+      const all = Array.isArray(res.data) ? res.data : res.data.notices || [];
+      setNotices(all);
+      const shuffled = [...all].sort(() => Math.random() - 0.5);
+      setRandomNotices(shuffled.slice(0, 3));
+
+      const mine = all.find((n) => Number(n.userId) === Number(clientId));
+      console.log("MINE AFTER SAVE ===>", mine);
+      setMyNotice(mine || null);
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de l'enregistrement de l'avis.");
+    }
+  };
+
+  const handleDeleteNotice = async () => {
+    if (!myNotice) return;
+    const ok = window.confirm("Supprimer votre avis ?");
+    if (!ok) return;
+
+    try {
+      await deleteNotice(myNotice.idNotice);
+      setMyNotice(null);
+      setCommentInput("");
+      setNoteInput(5);
+
+      const res = await getAllNotices();
+      const all = Array.isArray(res.data) ? res.data : res.data.notices || [];
+      setNotices(all);
+      const shuffled = [...all].sort(() => Math.random() - 0.5);
+      setRandomNotices(shuffled.slice(0, 3));
+    } catch (err) {
+      console.error(err);
+      alert("Erreur lors de la suppression de l'avis.");
+    }
+  };
 
   // --- Fonctions de tri ---
   const sortingByBedroom = () => setActiveFilter("chambres");
@@ -130,7 +213,6 @@ const Homepage = () => {
     autoplaySpeed: 3000,
   };
 
-  console.log("HOME results pour SearchBar", results);
   return (
     <Box
       sx={{
@@ -568,10 +650,7 @@ const Homepage = () => {
                         gap: 1.5,
                       }}
                     >
-                      <Avatar
-                        sx={{ width: 48, height: 48 }}
-                        src={undefined} // si plus tard tu as un champ avatar
-                      >
+                      <Avatar sx={{ width: 48, height: 48 }} src={undefined}>
                         {n.firstNameUser?.[0]}
                         {n.lastNameUser?.[0]}
                       </Avatar>
@@ -588,6 +667,28 @@ const Homepage = () => {
                           justifyContent: "center",
                         }}
                       >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            mb: 0.5,
+                          }}
+                        >
+                          <Rating
+                            value={Number(n.note) || 0}
+                            precision={0.5}
+                            readOnly
+                            size="small"
+                            sx={{ color: "#FFD700", mr: 1 }}
+                          />
+                          <Typography
+                            variant="caption"
+                            sx={{ color: "rgba(255,255,255,0.8)" }}
+                          >
+                            {n.note}/5
+                          </Typography>
+                        </Box>
+
                         <Typography
                           variant="body2"
                           color="white"
@@ -600,7 +701,7 @@ const Homepage = () => {
                           variant="caption"
                           sx={{ color: "rgba(255,255,255,0.8)", mt: 0.5 }}
                         >
-                          {n.firstNameUser} {n.lastNameUser} – {n.note}/5
+                          {n.firstNameUser} {n.lastNameUser}
                         </Typography>
                       </Box>
                     </Box>
@@ -627,6 +728,64 @@ const Homepage = () => {
           </Grid>
         </Grid>
       </Container>
+
+      <Box sx={{ mt: 4, maxWidth: 600, mx: "auto" }}>
+        <Typography variant="h6" gutterBottom textAlign="center">
+          Laisser un avis sur le camping
+        </Typography>
+
+        {!user && (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            textAlign="center"
+            sx={{ mb: 2 }}
+          >
+            Connectez-vous pour écrire, modifier ou supprimer votre avis.
+          </Typography>
+        )}
+
+        {user && (
+          <>
+            <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+              <Rating
+                value={Number(noteInput)}
+                onChange={(_, newValue) => setNoteInput(newValue || 0)}
+              />
+            </Box>
+
+            <TextField
+              label="Votre avis"
+              multiline
+              minRows={3}
+              fullWidth
+              value={commentInput}
+              onChange={(e) => setCommentInput(e.target.value)}
+              sx={{ mb: 2 }}
+            />
+
+            <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSaveNotice}
+              >
+                {myNotice ? "Mettre à jour mon avis" : "Publier mon avis"}
+              </Button>
+
+              {myNotice && (
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleDeleteNotice}
+                >
+                  Supprimer mon avis
+                </Button>
+              )}
+            </Box>
+          </>
+        )}
+      </Box>
 
       {/* Footer */}
       <Box
