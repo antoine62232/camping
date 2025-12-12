@@ -33,7 +33,7 @@ const themeColors = {
 const menuItems = [
   { text: "Réservations", path: "/reservation" },
   { text: "Actualités &\nÉvénements", path: "/actus" },
-  { text: "Galerie", path: "/galerie" },
+  { text: "Galerie", path: "/gallery" },
   { text: "Contact", path: "/contact" },
 ];
 

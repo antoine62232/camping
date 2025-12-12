@@ -1,0 +1,207 @@
+[
+    {
+        "id": 1,
+        "src": "/assets/photos/camping/brochetteGuimauves.webp",
+        "category": "camping",
+        "alt": "Brochettes de guimauves"
+    },
+    {
+        "id": 2,
+        "src": "/assets/photos/camping/camping.jpg",
+        "category": "camping",
+        "alt": "Camping"
+    },
+    {
+        "id": 3,
+        "src": "/assets/photos/camping/camping2.webp",
+        "category": "camping",
+        "alt": "Photo du camping"
+    },
+    {
+        "id": 4,
+        "src": "/assets/photos/camping/cheminNuit.avif",
+        "category": "camping",
+        "alt": "Chemin du camping la nuit"
+    },
+    {
+        "id": 5,
+        "src": "/assets/photos/camping/entreeCamping.png",
+        "category": "camping",
+        "alt": "Entrée du camping"
+    },
+    {
+        "id": 6,
+        "src": "/assets/photos/camping/jaccuzzi.avif",
+        "category": "camping",
+        "alt": "Jaccuzzi"
+    },
+    {
+        "id": 7,
+        "src": "/assets/photos/camping/barbecue.webp",
+        "category": "camping",
+        "alt": "Barbecue"
+    },
+    {
+        "id": 8,
+        "src": "/assets/photos/camping/zoneTranquille.jpg",
+        "category": "camping",
+        "alt": "Zone calme avec canapé, bibliothèque et TV"
+    },
+    {
+        "id": 9,
+        "src": "/assets/photos/logements/interieurLogement.avif",
+        "category": "logements",
+        "alt": "Intérieur du logement avec deux personnes qui jouent de la guitare et du tambour"
+    },
+    {
+        "id": 10,
+        "src": "/assets/photos/logements/logement2.webp",
+        "category": "logements",
+        "alt": "Logement vue extérieure"
+    },
+    {
+        "id": 11,
+        "src": "/assets/photos/logements/logement4.jpg",
+        "category": "logements",
+        "alt": "Logement avec terrasse vue extérieure"
+    },
+    {
+        "id": 12,
+        "src": "/assets/photos/logements/logement5.jpg",
+        "category": "logements",
+        "alt": "Logement vue extérieure avec terrasse ù se trouve une table et des chaises et transats"
+    },
+    {
+        "id": 13,
+        "src": "/assets/photos/logements/logementExterieur.avif",
+        "category": "logements",
+        "alt": "Logement 'bulle' avec pont pour y accéder"
+    },
+    {
+        "id": 14,
+        "src": "/assets/photos/logements/logementNuit.webp",
+        "category": "logements",
+        "alt": "Tente de luxe vue de nuit avec lumière tamisée"
+    },
+    {
+        "id": 15,
+        "src": "/assets/photos/logements/logementVueExterieur.avif",
+        "category": "logements",
+        "alt": "Photo prise de l'intérieur du logement où l'on peut voir deux personnes sur la terrasse et des arbres en arrière plan"
+    },
+    {
+        "id": 16,
+        "src": "/assets/photos/logements/PetitDejeuner.avif",
+        "category": "logements",
+        "alt": "Deux personnes prennent leur petit déjeuner sur la terrasse du logement"
+    },
+    {
+        "id": 17,
+        "src": "/assets/photos/piscine/jetDeau.jpg",
+        "category": "piscine",
+        "alt": "Jets d'eau de la piscine"
+    },
+    {
+        "id": 18,
+        "src": "/assets/photos/piscine/piscine2.jpg",
+        "category": "piscine",
+        "alt": "Endroit avec jet d'eau, toboggan et passerelle pour les enfants"
+    },
+    {
+        "id": 19,
+        "src": "/assets/photos/piscine/piscine3.jpg",
+        "category": "piscine",
+        "alt": "Coin piscine avec palmiers"
+    },
+    {
+        "id": 20,
+        "src": "/assets/photos/piscine/piscineEnfants.jpg",
+        "category": "piscine",
+        "alt": "Petit bassin avec des enfants qui s'amusent"
+    },
+    {
+        "id": 21,
+        "src": "/assets/photos/piscine/piscineInterieure.webp",
+        "category": "piscine",
+        "alt": "Piscine couverte lumineuse avec des arbres "
+    },
+    {
+        "id": 22,
+        "src": "/assets/photos/piscine/piscineNuit.avif",
+        "category": "piscine",
+        "alt": "Piscine vue de nuit avec éclairage tamisé et logement en arrière plan"
+    },
+    {
+        "id": 23,
+        "src": "/assets/photos/piscine/piscineVueExterieure.jpg",
+        "category": "piscine",
+        "alt": "Petit bassin vue intégrale du dessus"
+    },
+    {
+        "id": 24,
+        "src": "/assets/photos/piscine/piscineVueIntegrale.avif",
+        "category": "piscine",
+        "alt": "Piscine avec transats, chaises, parasols et en arrière la mer"
+    },
+    {
+        "id": 25,
+        "src": "/assets/photos/tourisme/anes.jpg",
+        "category": "tourisme",
+        "alt": "Photo avec des anes et des enfants"
+    },
+    {
+        "id": 26,
+        "src": "/assets/photos/tourisme/balade.jpg",
+        "category": "tourisme",
+        "alt": "Photo d'un père montrant à son fils le paysage en arrière plan (montagnes, plaines, forêts)"
+    },
+    {
+        "id": 27,
+        "src": "/assets/photos/tourisme/cascade.webp",
+        "category": "tourisme",
+        "alt": "Cascade avec des arbres"
+    },
+    {
+        "id": 28,
+        "src": "/assets/photos/tourisme/photo360Nature.jpg",
+        "category": "tourisme",
+        "alt": "Photo d'une petite rivière avec des arbres"
+    },
+    {
+        "id": 29,
+        "src": "/assets/photos/tourisme/randonnee.jpg",
+        "category": "tourisme",
+        "alt": "Photo d'un femme marchant sur un sentier en hauteur avec vue sur un lac et des montagnes en arrière plan"
+    },
+    {
+        "id": 30,
+        "src": "/assets/photos/tourisme/tourisme.jpg",
+        "category": "tourisme",
+        "alt": "Photo d'une rivière avec des habitations autour et un pont et des arbres en arrière plan"
+    },
+    {
+        "id": 31,
+        "src": "/assets/photos/tourisme/tourisme2.jpg",
+        "category": "tourisme",
+        "alt": "Photo d'une rivière avec des montagnes sur les cotés et une passerelle sur la droite avec des personnes dessus"
+    },
+    {
+        "id": 32,
+        "src": "/assets/photos/tourisme/village.jpg",
+        "category": "tourisme",
+        "alt": "Village perché sur une montagne avec des maisons et des arbres"
+    },
+    {
+        "id": 33,
+        "src": "/assets/photos/tourisme/village2.webp",
+        "category": "tourisme",
+        "alt": "Petite rue d'un petit village avec des maisons et des fleurs"
+    },
+    {
+        "id": 34,
+        "src": "/assets/photos/tourisme/villageMontagnes.webp",
+        "category": "tourisme",
+        "alt": "Village perché sur une montagne avec des maisons et des arbres"
+
+    }
+]
