@@ -37,6 +37,7 @@ import WbIncandescentIcon from '@mui/icons-material/WbIncandescent';
 import TvIcon from '@mui/icons-material/Tv';
 import CookieIcon from '@mui/icons-material/Cookie';
 import BathroomIcon from '@mui/icons-material/Bathroom';
+import bgVector from "../assets/Topographic 3.svg"
 
 // Service
 import {
@@ -144,7 +145,10 @@ const AccommodationPage = () => {
   }, {});
 
   return (
-    <Box sx={{ bgcolor: "background.default", minHeight: "100vh", py: 6 }}>
+    <Box sx={{ bgcolor: "background.default", minHeight: "100vh", py: 6, backgroundImage: `url(${bgVector})`,
+            backgroundRepeat: "repeat",
+            backgroundSize: "contain",
+            backgroundPosition: "top center", }}>
       <Container maxWidth="lg">
         <Button
           startIcon={<ArrowBackIcon />}

@@ -16,6 +16,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SendIcon from "@mui/icons-material/Send";
+import bgVector from "../assets/Topographic 2.svg"
 
 const Contact = () => {
   const theme = useTheme();
@@ -40,7 +41,11 @@ const Contact = () => {
 
   return (
     <Box
-      sx={{ bgcolor: "background.default", minHeight: "100vh", pb: 8, pt: 12 }}
+      sx={{ bgcolor: "background.default", minHeight: "100vh", pb: 8, pt: 12,
+              backgroundImage: `url(${bgVector})`,
+              backgroundRepeat: "repeat",
+              backgroundSize: "contain",
+              backgroundPosition: "top center", }}
     >
       {/* header */}
       <Box

@@ -23,6 +23,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import bgVector from "../assets/Topographic 1.svg";
 
 // Icônes
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -131,7 +132,16 @@ const Homepage = () => {
 
   console.log("HOME results pour SearchBar", results);
   return (
-    <Box sx={{ bgcolor: "#f9f9f9" }}>
+    <Box
+      sx={{
+        bgcolor: "#f9f9f9",
+        minHeight: "100vh",
+        backgroundImage: `url(${bgVector})`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "contain",
+        backgroundPosition: "top center",
+      }}
+    >
       {/* Header Hero */}
       <Box
         sx={{
@@ -175,7 +185,12 @@ const Homepage = () => {
           Bienvenue au camping Beauvert !
         </Typography>
         <Box
-          sx={{ position: "relative", zIndex: 1, width: "90%", maxWidth: 900 }}
+          sx={{
+            position: "relative",
+            zIndex: 1,
+            width: "90%",
+            maxWidth: 900,
+          }}
         >
           <ReservationSearchBar
             accommodations={results}
@@ -243,7 +258,11 @@ const Homepage = () => {
                         {slide.location}
                       </Typography>
                       <Box
-                        sx={{ display: "flex", alignItems: "center", mt: 1 }}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          mt: 1,
+                        }}
                       >
                         <Rating
                           value={Number(slide.rating)}
@@ -269,7 +288,11 @@ const Homepage = () => {
                         }}
                       >
                         <Box
-                          sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                          }}
                         >
                           <Typography variant="body1">
                             Dates disponibles
@@ -281,7 +304,12 @@ const Homepage = () => {
                         </Typography>
                       </Box>
                       <Divider
-                        sx={{ bgcolor: "white", mt: 1, mb: 2, opacity: 0.6 }}
+                        sx={{
+                          bgcolor: "white",
+                          mt: 1,
+                          mb: 2,
+                          opacity: 0.6,
+                        }}
                       />
                       <Stack direction="row" spacing={3}>
                         <BedIcon />
@@ -324,7 +352,10 @@ const Homepage = () => {
             onClick={sortingByBedroom}
             sx={
               activeFilter === "chambres"
-                ? { bgcolor: "#2E8B57 !important", color: "white !important" }
+                ? {
+                    bgcolor: "#2E8B57 !important",
+                    color: "white !important",
+                  }
                 : {}
             }
           >
@@ -334,7 +365,10 @@ const Homepage = () => {
             onClick={sortingByPrice}
             sx={
               activeFilter === "prix"
-                ? { bgcolor: "#2E8B57 !important", color: "white !important" }
+                ? {
+                    bgcolor: "#2E8B57 !important",
+                    color: "white !important",
+                  }
                 : {}
             }
           >
@@ -344,7 +378,10 @@ const Homepage = () => {
             onClick={sortingByRating}
             sx={
               activeFilter === "avis"
-                ? { bgcolor: "#2E8B57 !important", color: "white !important" }
+                ? {
+                    bgcolor: "#2E8B57 !important",
+                    color: "white !important",
+                  }
                 : {}
             }
           >

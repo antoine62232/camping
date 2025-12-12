@@ -15,6 +15,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { createPaymentIntent } from "../services/paymentService";
 import CheckoutForm from "../components/CheckoutForm";
+import bgVector from "../assets/Topographic 3.svg"
 
 // Clé publique Stripe (à mettre dans .env)
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
@@ -127,7 +128,10 @@ function ReservationConfirmationPage() {
   };
 
   return (
-    <Box sx={{ bgcolor: "background.default", py: 4 }}>
+    <Box sx={{ bgcolor: "background.default", py: 4, minHeight: "100vh", backgroundImage: `url(${bgVector})`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "contain",
+        backgroundPosition: "top center", }}>
       <Container maxWidth="lg">
         <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>
           Confirmation de paiement
