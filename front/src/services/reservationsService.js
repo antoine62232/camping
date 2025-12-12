@@ -14,3 +14,6 @@ export const updateReservation = (id, data) =>
 
 export const deleteReservation = (id) =>
   apiClient.delete(`/reservations/delete/${id}`);
+
+export const cancelAndRefundReservation = (idReservation) =>
+  apiClient.post(`/reservations/${idReservation}/cancel-and-refund`);

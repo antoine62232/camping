@@ -85,6 +85,13 @@ export async function createStripePaymentIntent(amountInCents) {
   return paymentIntent;
 }
 
+export async function refundStripePaymentIntent(paymentIntentId) {
+  const refund = await stripe.refunds.create({
+    payment_intent: paymentIntentId,
+  });
+  return refund;
+}
+
 export default {
   createPayment,
   getAllPayments,
