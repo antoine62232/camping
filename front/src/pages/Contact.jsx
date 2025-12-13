@@ -10,13 +10,17 @@ import {
   Stack,
   useTheme,
   Divider,
+  IconButton,
 } from "@mui/material";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SendIcon from "@mui/icons-material/Send";
-import bgVector from "../assets/Topographic 2.svg"
+import bgVector from "../assets/Topographic 2.svg";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 const Contact = () => {
   const theme = useTheme();
@@ -41,11 +45,16 @@ const Contact = () => {
 
   return (
     <Box
-      sx={{ bgcolor: "background.default", minHeight: "100vh", pb: 8, pt: 12,
-              backgroundImage: `url(${bgVector})`,
-              backgroundRepeat: "repeat",
-              backgroundSize: "contain",
-              backgroundPosition: "top center", }}
+      sx={{
+        bgcolor: "background.default",
+        minHeight: "100vh",
+        pb: 8,
+        pt: 12,
+        backgroundImage: `url(${bgVector})`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "contain",
+        backgroundPosition: "top center",
+      }}
     >
       {/* header */}
       <Box
@@ -264,6 +273,65 @@ const Contact = () => {
           </Grid>
         </Grid>
       </Container>
+
+      <Box
+        component="footer"
+        sx={{ bgcolor: "#FDFBF7", py: 6, borderTop: "1px solid #eaeaea" }}
+      >
+        <Container maxWidth="lg">
+          <Stack direction="row" spacing={3} justifyContent="center" mb={5}>
+            <IconButton color="inherit">
+              <FacebookIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
+            <IconButton color="inherit">
+              <InstagramIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
+            <IconButton color="inherit">
+              <LinkedInIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
+          </Stack>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              mb: 5,
+              opacity: 0.8,
+            }}
+          >
+            <Divider
+              sx={{ width: { xs: "30px", md: "100px" }, bgcolor: "#ccc" }}
+            />
+            <Typography
+              variant="body2"
+              color="text.primary"
+              sx={{ mx: 2, textAlign: "center", fontWeight: 500 }}
+            >
+              © 2025 BEAUVERT Projet Dev – Tous droits réservés.
+            </Typography>
+            <Divider
+              sx={{ width: { xs: "30px", md: "100px" }, bgcolor: "#ccc" }}
+            />
+          </Box>
+
+          {/* Logo Footer */}
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box
+              component="img"
+              src="src/assets/Logo_NavBar.png"
+              alt="Logo Beauvert"
+              sx={{
+                height: 80,
+                width: 80,
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: "3px solid white",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+              }}
+            />
+          </Box>
+        </Container>
+      </Box>
     </Box>
   );
 };

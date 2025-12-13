@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { getFinancialReport } from "../services/reportsService";
+import { getFinancialReport, downloadFinancialCsv } from "../services/reportsService";
 
 const columns = [
   { field: "idPayment", headerName: "ID paiement", flex: 1 },
@@ -44,7 +44,26 @@ function RapportsFinanciers() {
 
   useEffect(() => {
     loadReport();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleExportFinancialCsv = async () => {
+    try {
+      const res = await downloadFinancialCsv({ from, to });
+      const url = window.URL.createObjectURL(
+        new Blob([res.data], { type: "text/csv" })
+      );
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "rapport-financier.csv");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (e) {
+      console.error(e);
+      alert("Erreur lors de l'export CSV du rapport financier.");
+    }
+  };
 
   return (
     <Box>
@@ -70,7 +89,9 @@ function RapportsFinanciers() {
         <Button variant="contained" onClick={loadReport}>
           Rafraîchir
         </Button>
-        {/* Plus tard : boutons Export Excel / PDF */}
+        <Button variant="outlined" onClick={handleExportFinancialCsv}>
+          Exporter CSV
+        </Button>
       </Stack>
 
       <DataGrid

@@ -18,6 +18,7 @@ import {
   ListItemIcon,
   ListItemText,
   Tooltip,
+  IconButton,
 } from "@mui/material";
 
 // Icônes
@@ -33,11 +34,14 @@ import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import WifiIcon from "@mui/icons-material/Wifi";
 import LocalCafeIcon from "@mui/icons-material/LocalCafe";
 import BedIcon from "@mui/icons-material/Bed";
-import WbIncandescentIcon from '@mui/icons-material/WbIncandescent';
-import TvIcon from '@mui/icons-material/Tv';
-import CookieIcon from '@mui/icons-material/Cookie';
-import BathroomIcon from '@mui/icons-material/Bathroom';
-import bgVector from "../assets/Topographic 3.svg"
+import WbIncandescentIcon from "@mui/icons-material/WbIncandescent";
+import TvIcon from "@mui/icons-material/Tv";
+import CookieIcon from "@mui/icons-material/Cookie";
+import BathroomIcon from "@mui/icons-material/Bathroom";
+import bgVector from "../assets/Topographic 3.svg";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 // Service
 import {
@@ -145,10 +149,17 @@ const AccommodationPage = () => {
   }, {});
 
   return (
-    <Box sx={{ bgcolor: "background.default", minHeight: "100vh", py: 6, backgroundImage: `url(${bgVector})`,
-            backgroundRepeat: "repeat",
-            backgroundSize: "contain",
-            backgroundPosition: "top center", }}>
+    <Box
+      sx={{
+        bgcolor: "background.default",
+        minHeight: "100vh",
+        py: 6,
+        backgroundImage: `url(${bgVector})`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "contain",
+        backgroundPosition: "top center",
+      }}
+    >
       <Container maxWidth="lg">
         <Button
           startIcon={<ArrowBackIcon />}
@@ -248,15 +259,12 @@ const AccommodationPage = () => {
                   if (label.includes("wifi")) Icon = WifiIcon;
                   else if (label.includes("clim")) Icon = AcUnitIcon;
                   else if (label.includes("cuisine")) Icon = CookieIcon;
-                  else if (label.includes("tv"))
-                    Icon = TvIcon; 
-                  else if (label.includes("terrasse"))
-                    Icon = LocalCafeIcon; 
+                  else if (label.includes("tv")) Icon = TvIcon;
+                  else if (label.includes("terrasse")) Icon = LocalCafeIcon;
                   else if (label.includes("lits") || label.includes("lit"))
                     Icon = BedIcon;
                   else if (label.includes("électricité"))
-                    Icon =
-                      WbIncandescentIcon;
+                    Icon = WbIncandescentIcon;
                   else if (
                     label.includes("lave-vaisselle") ||
                     label.includes("lave vaisselle")
@@ -433,6 +441,64 @@ const AccommodationPage = () => {
           </Grid>
         </Grid>
       </Container>
+      <Box
+        component="footer"
+        sx={{ bgcolor: "#FDFBF7", py: 6, borderTop: "1px solid #eaeaea" }}
+      >
+        <Container maxWidth="lg">
+          <Stack direction="row" spacing={3} justifyContent="center" mb={5}>
+            <IconButton color="inherit">
+              <FacebookIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
+            <IconButton color="inherit">
+              <InstagramIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
+            <IconButton color="inherit">
+              <LinkedInIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
+          </Stack>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              mb: 5,
+              opacity: 0.8,
+            }}
+          >
+            <Divider
+              sx={{ width: { xs: "30px", md: "100px" }, bgcolor: "#ccc" }}
+            />
+            <Typography
+              variant="body2"
+              color="text.primary"
+              sx={{ mx: 2, textAlign: "center", fontWeight: 500 }}
+            >
+              © 2025 BEAUVERT Projet Dev – Tous droits réservés.
+            </Typography>
+            <Divider
+              sx={{ width: { xs: "30px", md: "100px" }, bgcolor: "#ccc" }}
+            />
+          </Box>
+
+          {/* Logo Footer */}
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box
+              component="img"
+              src="src/assets/Logo_NavBar.png"
+              alt="Logo Beauvert"
+              sx={{
+                height: 80,
+                width: 80,
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: "3px solid white",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+              }}
+            />
+          </Box>
+        </Container>
+      </Box>
     </Box>
   );
 };

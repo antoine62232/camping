@@ -8,6 +8,7 @@ import {
   Divider,
   Stack,
   Button,
+  IconButton,
 } from "@mui/material";
 import { getAllAccommodations } from "../services/accommodationService";
 import { getAllOptions } from "../services/optionsService";
@@ -15,7 +16,10 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { createPaymentIntent } from "../services/paymentService";
 import CheckoutForm from "../components/CheckoutForm";
-import bgVector from "../assets/Topographic 3.svg"
+import bgVector from "../assets/Topographic 3.svg";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
 // Clé publique Stripe (à mettre dans .env)
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
@@ -128,10 +132,17 @@ function ReservationConfirmationPage() {
   };
 
   return (
-    <Box sx={{ bgcolor: "background.default", py: 4, minHeight: "100vh", backgroundImage: `url(${bgVector})`,
+    <Box
+      sx={{
+        bgcolor: "background.default",
+        py: 4,
+        minHeight: "100vh",
+        backgroundImage: `url(${bgVector})`,
         backgroundRepeat: "repeat",
         backgroundSize: "contain",
-        backgroundPosition: "top center", }}>
+        backgroundPosition: "top center",
+      }}
+    >
       <Container maxWidth="lg">
         <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>
           Confirmation de paiement
@@ -237,6 +248,64 @@ function ReservationConfirmationPage() {
           </Paper>
         </Box>
       </Container>
+      <Box
+        component="footer"
+        sx={{ bgcolor: "#FDFBF7", py: 6, borderTop: "1px solid #eaeaea" }}
+      >
+        <Container maxWidth="lg">
+          <Stack direction="row" spacing={3} justifyContent="center" mb={5}>
+            <IconButton color="inherit">
+              <FacebookIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
+            <IconButton color="inherit">
+              <InstagramIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
+            <IconButton color="inherit">
+              <LinkedInIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
+          </Stack>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              mb: 5,
+              opacity: 0.8,
+            }}
+          >
+            <Divider
+              sx={{ width: { xs: "30px", md: "100px" }, bgcolor: "#ccc" }}
+            />
+            <Typography
+              variant="body2"
+              color="text.primary"
+              sx={{ mx: 2, textAlign: "center", fontWeight: 500 }}
+            >
+              © 2025 BEAUVERT Projet Dev – Tous droits réservés.
+            </Typography>
+            <Divider
+              sx={{ width: { xs: "30px", md: "100px" }, bgcolor: "#ccc" }}
+            />
+          </Box>
+
+          {/* Logo Footer */}
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box
+              component="img"
+              src="src/assets/Logo_NavBar.png"
+              alt="Logo Beauvert"
+              sx={{
+                height: 80,
+                width: 80,
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: "3px solid white",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+              }}
+            />
+          </Box>
+        </Container>
+      </Box>
     </Box>
   );
 }

@@ -15,3 +15,42 @@ export const getKpi = async (req, res) => {
     res.status(500).json({ message: "Erreur lors du calcul des KPI" });
   }
 };
+
+export const exportKpiCsv = async (req, res) => {
+  try {
+    const { from, to } = req.query;
+    const kpi = await kpiModel.getKpi(from, to);
+
+    res.setHeader("Content-Type", "text/csv; charset=utf-8");
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="kpi.csv"'
+    );
+
+    const headers = [
+      "from",
+      "to",
+      "reservationsCount",
+      "monthlyRevenue",
+      "averageBasket",
+      "occupancyRate",
+    ];
+    const csvRows = [headers.join(",")];
+
+    csvRows.push(
+      [
+        from,
+        to,
+        kpi.reservationsCount,
+        kpi.monthlyRevenue,
+        kpi.averageBasket,
+        kpi.occupancyRate,
+      ].join(",")
+    );
+
+    res.status(200).send(csvRows.join("\n"));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur export KPI CSV" });
+  }
+};

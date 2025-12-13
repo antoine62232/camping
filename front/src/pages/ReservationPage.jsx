@@ -17,14 +17,23 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import ReservationSearchBar from "../components/ReservationSearchBar";
 import { getAllAccommodations } from "../services/accommodationService";
 import { getAllOptions } from "../services/optionsService";
-import bgVector from "../assets/Topographic 3.svg"
+import bgVector from "../assets/Topographic 3.svg";
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 function ReservationPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { accommodationId, startDate, endDate, adults, children, selectedOptions: initialSelectedOptions } =
-    location.state || {};
+  const {
+    accommodationId,
+    startDate,
+    endDate,
+    adults,
+    children,
+    selectedOptions: initialSelectedOptions,
+  } = location.state || {};
 
   // State de la recherche actuelle
   const [currentAccommodationId, setCurrentAccommodationId] = useState(
@@ -35,13 +44,14 @@ function ReservationPage() {
   const [currentAdults, setCurrentAdults] = useState(adults || 2);
   const [currentChildren, setCurrentChildren] = useState(children || 0);
 
-  
   // Données back
   const [accommodations, setAccommodations] = useState([]);
   const [options, setOptions] = useState([]);
-  
-  const [selectedOptions, setSelectedOptions] = useState(initialSelectedOptions || {});
-  
+
+  const [selectedOptions, setSelectedOptions] = useState(
+    initialSelectedOptions || {}
+  );
+
   const selectedAccommodation = useMemo(
     () =>
       accommodations.find(
@@ -49,7 +59,7 @@ function ReservationPage() {
       ),
     [accommodations, currentAccommodationId]
   );
-  
+
   // Chargement hébergements + options
   useEffect(() => {
     getAllAccommodations()
@@ -165,10 +175,17 @@ function ReservationPage() {
   };
 
   return (
-    <Box sx={{ bgcolor: "background.default", py: 4, minHeight: "100vh", backgroundImage: `url(${bgVector})`,
+    <Box
+      sx={{
+        bgcolor: "background.default",
+        py: 4,
+        minHeight: "100vh",
+        backgroundImage: `url(${bgVector})`,
         backgroundRepeat: "repeat",
         backgroundSize: "contain",
-        backgroundPosition: "top center", }}>
+        backgroundPosition: "top center",
+      }}
+    >
       <Container maxWidth="md">
         <Typography variant="h4" fontWeight="bold" gutterBottom>
           Réservation
@@ -312,6 +329,64 @@ function ReservationPage() {
           </Button>
         </Box>
       </Container>
+      <Box
+        component="footer"
+        sx={{ bgcolor: "#FDFBF7", py: 6, borderTop: "1px solid #eaeaea" }}
+      >
+        <Container maxWidth="lg">
+          <Stack direction="row" spacing={3} justifyContent="center" mb={5}>
+            <IconButton color="inherit">
+              <FacebookIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
+            <IconButton color="inherit">
+              <InstagramIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
+            <IconButton color="inherit">
+              <LinkedInIcon sx={{ fontSize: 30, color: "#333" }} />
+            </IconButton>
+          </Stack>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              mb: 5,
+              opacity: 0.8,
+            }}
+          >
+            <Divider
+              sx={{ width: { xs: "30px", md: "100px" }, bgcolor: "#ccc" }}
+            />
+            <Typography
+              variant="body2"
+              color="text.primary"
+              sx={{ mx: 2, textAlign: "center", fontWeight: 500 }}
+            >
+              © 2025 BEAUVERT Projet Dev – Tous droits réservés.
+            </Typography>
+            <Divider
+              sx={{ width: { xs: "30px", md: "100px" }, bgcolor: "#ccc" }}
+            />
+          </Box>
+
+          {/* Logo Footer */}
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box
+              component="img"
+              src="src/assets/Logo_NavBar.png"
+              alt="Logo Beauvert"
+              sx={{
+                height: 80,
+                width: 80,
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: "3px solid white",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+              }}
+            />
+          </Box>
+        </Container>
+      </Box>
     </Box>
   );
 }
