@@ -22,9 +22,6 @@ import ReservationSearchBar from "../components/ReservationSearchBar";
 import { getAllAccommodations } from "../services/accommodationService";
 import { getAllOptions } from "../services/optionsService";
 import bgVector from "../assets/Topographic 3.svg";
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 function ReservationPage() {
   const location = useLocation();
@@ -81,11 +78,9 @@ function ReservationPage() {
 
     getAllOptions()
       .then((res) => {
-        // console.log("OPTIONS API ===>", res.data);
         const data = Array.isArray(res.data)
           ? res.data
           : res.data.options || res.data.data || [];
-        // console.log("OPTIONS UTILISÉES ===>", data);
         setOptions(data);
       })
       .catch((err) => console.error("Erreur options", err));
@@ -93,7 +88,7 @@ function ReservationPage() {
 
   const safeOptions = Array.isArray(options) ? options : [];
 
-  // Mise à jour quantité d’une option
+  // Mise à jour quantité d'une option
   const setOptionQuantity = (optId, quantity) => {
     setSelectedOptions((prev) => {
       const q = Math.max(0, quantity);
@@ -179,56 +174,21 @@ function ReservationPage() {
   };
 
   return (
-    <Box
-      sx={{
-        bgcolor: "background.default",
-        py: 4,
-        minHeight: "100vh",
-        backgroundImage: `url(${bgVector})`,
-        backgroundRepeat: "repeat",
-        backgroundSize: "contain",
-        backgroundPosition: "top center",
-      }}
-    >
-      <Container maxWidth="md">
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
-          Réservation
-        </Typography>
-
-        {/* Récapitulatif */}
-        <Paper sx={{ p: 2, mb: 3, bgcolor: "section.main" }}>
-          <Typography variant="h6" gutterBottom>
-            Récapitulatif de votre séjour
-          </Typography>
-          <Typography>
-            Hébergement :{" "}
-            {selectedAccommodation?.title || "Tous les hébergements"}
-          </Typography>
-          <Typography>Arrivée : {currentStartDate || "-"}</Typography>
-          <Typography>Départ : {currentEndDate || "-"}</Typography>
-          <Typography>
-            Personnes : {currentAdults} adulte(s), {currentChildren} enfant(s)
-          </Typography>
-          {priceData.nights > 0 && (
-            <Typography sx={{ mt: 1 }}>
-              Nombre de nuits : {priceData.nights}
-            </Typography>
-          )}
-        </Paper>
-
-        {/* Barre de recherche modifiable */}
-        <Paper sx={{ p: 2, mb: 3, bgcolor: "section.main" }}>
-          <ReservationSearchBar
-            accommodations={accommodations}
-            defaultAccommodationId={currentAccommodationId}
-            onSearch={handleSearchChange}
-          />
-        </Paper>
-
-        {/* Options + total */}
-        <Paper sx={{ p: 2, mb: 3, bgcolor: "section.main" }}>
-          <Typography variant="h6" gutterBottom>
-            Options
+    <>
+      <Box
+        sx={{
+          bgcolor: "background.default",
+          py: 4,
+          minHeight: "100vh",
+          backgroundImage: `url(${bgVector})`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "contain",
+          backgroundPosition: "top center",
+        }}
+      >
+        <Container maxWidth="md">
+          <Typography variant="h4" fontWeight="bold" gutterBottom>
+            Réservation
           </Typography>
 
           {/* Récapitulatif */}
@@ -371,32 +331,7 @@ function ReservationPage() {
         </Container>
       </Box>
 
-      {/* footer */}
-      <Box
-        component="footer"
-        sx={{ bgcolor: "#FDFBF7", py: 6, borderTop: "1px solid #eaeaea" }}
-      >
-        <Container maxWidth="lg">
-          <Stack direction="row" spacing={3} justifyContent="center" mb={5}>
-            <IconButton color="inherit"><FacebookIcon sx={{ fontSize: 30, color: "#333" }} /></IconButton>
-            <IconButton color="inherit"><InstagramIcon sx={{ fontSize: 30, color: "#333" }} /></IconButton>
-            <IconButton color="inherit"><LinkedInIcon sx={{ fontSize: 30, color: "#333" }} /></IconButton>
-          </Stack>
-        </Paper>
-
-        {/* Bouton continuer */}
-        <Box sx={{ textAlign: "right" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            onClick={handleContinue}
-            disabled={!currentStartDate || !currentEndDate}
-          >
-            Continuer vers le paiement
-          </Button>
-        </Box>
-      </Container>
+      {/* Footer */}
       <Box
         component="footer"
         sx={{ bgcolor: "#FDFBF7", py: 6, borderTop: "1px solid #eaeaea" }}
@@ -413,6 +348,7 @@ function ReservationPage() {
               <LinkedInIcon sx={{ fontSize: 30, color: "#333" }} />
             </IconButton>
           </Stack>
+
           <Box
             sx={{
               display: "flex",
@@ -441,7 +377,7 @@ function ReservationPage() {
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Box
               component="img"
-              src="src/assets/Logo_NavBar.png"
+              src={logoCamping}
               alt="Logo Beauvert"
               sx={{
                 height: 80,
@@ -455,7 +391,7 @@ function ReservationPage() {
           </Box>
         </Container>
       </Box>
-    </Box>
+    </>
   );
 }
 
