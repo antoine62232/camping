@@ -4,6 +4,7 @@ import '../App.css';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import bgVector from "../assets/Topographic 2.svg"
 
 // IMPORT DES COMPOSANTS
 import AnimationCard from '../components/AnimationCard';
@@ -38,7 +39,10 @@ export default function ActuPage() {
   ];
 
   return (
-    <Box sx={{ width: '100%', minHeight: '100vh', bgcolor: '#fff', pb: 8, m: 0, p: 0 }}>
+    <Box sx={{ width: '100%', minHeight: '100vh', bgcolor: '#fff', pb: 8, m: 0, p: 0, backgroundImage: `url(${bgVector})`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "contain",
+        backgroundPosition: "top center",}}>
       
       {/* 1. HERO HEADER */}
       <Box 

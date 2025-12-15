@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEmployeeAuth } from "../hooks/useEmployeeAuth";
+import bgVector from "../assets/Topographic 1.svg"
 
 function AdminLoginPage() {
   const { login } = useEmployeeAuth();
@@ -36,7 +37,11 @@ function AdminLoginPage() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        px: 2
+        px: 2, 
+        backgroundImage: `url(${bgVector})`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "contain",
+        backgroundPosition: "top center",
       }}
     >
       <Paper

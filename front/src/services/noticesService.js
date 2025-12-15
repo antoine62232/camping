@@ -1,7 +1,8 @@
 import apiClient from "../api/apiClient";
 
-export const createNotice = (data) =>
-  apiClient.post("/notices/add", data);
+export const createNotice = (data) => {
+  return apiClient.post("/notices/add", data);
+};
 
 export const getAllNotices = () =>
   apiClient.get("/notices/");
