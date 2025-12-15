@@ -34,12 +34,8 @@ import LocalCafeIcon from "@mui/icons-material/LocalCafe";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-
-// Assets
 import logoCamping from "../assets/Logo_NavBar.png";
 import ReservationSearchBar from "../components/ReservationSearchBar";
-
-// Service
 import { getAllAccommodations } from "../services/accommodationService";
 import {
   getAllNotices,
@@ -52,7 +48,7 @@ const Homepage = () => {
   const navigate = useNavigate();
 
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true); // Ajout d'un état de chargement
+  const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState("chambres");
   const [notices, setNotices] = useState([]);
   const [randomNotices, setRandomNotices] = useState([]);

@@ -14,6 +14,10 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import logoCamping from "../assets/Logo_NavBar.png";
 import ReservationSearchBar from "../components/ReservationSearchBar";
 import { getAllAccommodations } from "../services/accommodationService";
 import { getAllOptions } from "../services/optionsService";
@@ -77,11 +81,11 @@ function ReservationPage() {
 
     getAllOptions()
       .then((res) => {
-        console.log("OPTIONS API ===>", res.data);
+        // console.log("OPTIONS API ===>", res.data);
         const data = Array.isArray(res.data)
           ? res.data
           : res.data.options || res.data.data || [];
-        console.log("OPTIONS UTILISÉES ===>", data);
+        // console.log("OPTIONS UTILISÉES ===>", data);
         setOptions(data);
       })
       .catch((err) => console.error("Erreur options", err));
@@ -227,92 +231,156 @@ function ReservationPage() {
             Options
           </Typography>
 
-          <Stack spacing={1}>
-            {safeOptions.map((opt) => {
-              const sel = selectedOptions[opt.idOption];
-              const quantity = sel?.quantity ?? 0;
-
-              return (
-                <Box
-                  key={opt.idOption}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    bgcolor: "background.default",
-                    p: 1.5,
-                    borderRadius: 1,
-                  }}
-                >
-                  <Box>
-                    <Typography fontWeight="500">{opt.nameOption}</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {opt.descriptionOption}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{ mt: 0.5 }}
-                    >
-                      {opt.durationType === "per_night"
-                        ? `${opt.unitPrice} € / nuit`
-                        : `${opt.unitPrice} € / séjour`}
-                    </Typography>
-                  </Box>
-
-                  {/* Zone de choix quantité */}
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <IconButton
-                      size="small"
-                      onClick={() =>
-                        setOptionQuantity(opt.idOption, quantity - 1)
-                      }
-                    >
-                      <RemoveIcon fontSize="small" />
-                    </IconButton>
-
-                    <TextField
-                      value={quantity}
-                      onChange={(e) =>
-                        setOptionQuantity(
-                          opt.idOption,
-                          Number(e.target.value) || 0
-                        )
-                      }
-                      size="small"
-                      type="number"
-                      inputProps={{
-                        min: 0,
-                        style: { textAlign: "center", width: 40 },
-                      }}
-                    />
-
-                    <IconButton
-                      size="small"
-                      onClick={() =>
-                        setOptionQuantity(opt.idOption, quantity + 1)
-                      }
-                    >
-                      <AddIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
-                </Box>
-              );
-            })}
-          </Stack>
-
-          <Divider sx={{ my: 2 }} />
-
-          <Stack spacing={0.5}>
-            <Typography>
-              Prix de base : {priceData.basePrice.toFixed(2)} €
+          {/* Récapitulatif */}
+          <Paper sx={{ p: 2, mb: 3, bgcolor: "section.main" }}>
+            <Typography variant="h6" gutterBottom>
+              Récapitulatif de votre séjour
             </Typography>
             <Typography>
-              Options : {priceData.optionsPrice.toFixed(2)} €
+              Hébergement :{" "}
+              {selectedAccommodation?.title || "Tous les hébergements"}
             </Typography>
-            <Typography variant="h6" fontWeight="bold">
-              Total estimé : {priceData.totalPrice.toFixed(2)} €
+            <Typography>Arrivée : {currentStartDate || "-"}</Typography>
+            <Typography>Départ : {currentEndDate || "-"}</Typography>
+            <Typography>
+              Personnes : {currentAdults} adulte(s), {currentChildren} enfant(s)
             </Typography>
+            {priceData.nights > 0 && (
+              <Typography sx={{ mt: 1 }}>
+                Nombre de nuits : {priceData.nights}
+              </Typography>
+            )}
+          </Paper>
+
+          {/* Barre de recherche modifiable */}
+          <Paper sx={{ p: 2, mb: 3, bgcolor: "section.main" }}>
+            <ReservationSearchBar
+              accommodations={accommodations}
+              defaultAccommodationId={currentAccommodationId}
+              onSearch={handleSearchChange}
+            />
+          </Paper>
+
+          {/* Options + total */}
+          <Paper sx={{ p: 2, mb: 3, bgcolor: "section.main" }}>
+            <Typography variant="h6" gutterBottom>
+              Options
+            </Typography>
+
+            <Stack spacing={1}>
+              {safeOptions.map((opt) => {
+                const sel = selectedOptions[opt.idOption];
+                const quantity = sel?.quantity ?? 0;
+
+                return (
+                  <Box
+                    key={opt.idOption}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      bgcolor: "background.default",
+                      p: 1.5,
+                      borderRadius: 1,
+                    }}
+                  >
+                    <Box>
+                      <Typography fontWeight="500">{opt.nameOption}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {opt.descriptionOption}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mt: 0.5 }}
+                      >
+                        {opt.durationType === "per_night"
+                          ? `${opt.unitPrice} € / nuit`
+                          : `${opt.unitPrice} € / séjour`}
+                      </Typography>
+                    </Box>
+
+                    {/* Zone de choix quantité */}
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <IconButton
+                        size="small"
+                        onClick={() =>
+                          setOptionQuantity(opt.idOption, quantity - 1)
+                        }
+                      >
+                        <RemoveIcon fontSize="small" />
+                      </IconButton>
+
+                      <TextField
+                        value={quantity}
+                        onChange={(e) =>
+                          setOptionQuantity(
+                            opt.idOption,
+                            Number(e.target.value) || 0
+                          )
+                        }
+                        size="small"
+                        type="number"
+                        inputProps={{
+                          min: 0,
+                          style: { textAlign: "center", width: 40 },
+                        }}
+                      />
+
+                      <IconButton
+                        size="small"
+                        onClick={() =>
+                          setOptionQuantity(opt.idOption, quantity + 1)
+                        }
+                      >
+                        <AddIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
+                  </Box>
+                );
+              })}
+            </Stack>
+
+            <Divider sx={{ my: 2 }} />
+
+            <Stack spacing={0.5}>
+              <Typography>
+                Prix de base : {priceData.basePrice.toFixed(2)} €
+              </Typography>
+              <Typography>
+                Options : {priceData.optionsPrice.toFixed(2)} €
+              </Typography>
+              <Typography variant="h6" fontWeight="bold">
+                Total estimé : {priceData.totalPrice.toFixed(2)} €
+              </Typography>
+            </Stack>
+          </Paper>
+
+          {/* Bouton continuer */}
+          <Box sx={{ textAlign: "right" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={handleContinue}
+              disabled={!currentStartDate || !currentEndDate}
+            >
+              Continuer vers le paiement
+            </Button>
+          </Box>
+        </Container>
+      </Box>
+
+      {/* footer */}
+      <Box
+        component="footer"
+        sx={{ bgcolor: "#FDFBF7", py: 6, borderTop: "1px solid #eaeaea" }}
+      >
+        <Container maxWidth="lg">
+          <Stack direction="row" spacing={3} justifyContent="center" mb={5}>
+            <IconButton color="inherit"><FacebookIcon sx={{ fontSize: 30, color: "#333" }} /></IconButton>
+            <IconButton color="inherit"><InstagramIcon sx={{ fontSize: 30, color: "#333" }} /></IconButton>
+            <IconButton color="inherit"><LinkedInIcon sx={{ fontSize: 30, color: "#333" }} /></IconButton>
           </Stack>
         </Paper>
 
