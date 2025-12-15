@@ -10,4 +10,8 @@ node_modules/
 # Environnement
 .env
 
+# Cache de Vite
+.vite/
+front/.vite/
+
 
